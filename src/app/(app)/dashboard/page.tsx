@@ -1,8 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Share2, TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
+import { Share2, TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
 import PatientsChart from "@/components/dashboard/PatientsChart";
 import AppointmentsPanel from "@/components/dashboard/AppointmentsPanel";
+import RealTimeClock from "@/components/RealTimeClock";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -151,14 +152,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 border border-gray-200 shadow-sm">
-            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400 hover:text-gray-600">
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <span className="text-sm font-medium text-gray-700">Jun 24, 2022</span>
-            <Badge variant="outline" className="text-teal-600 border-teal-200 bg-teal-50 text-xs">Today</Badge>
-            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400 hover:text-gray-600">
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+            <RealTimeClock />
           </div>
           <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl shadow-sm">
             <Share2 className="w-4 h-4" />
