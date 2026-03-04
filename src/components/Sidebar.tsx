@@ -16,6 +16,10 @@ import {
   Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
@@ -57,13 +61,20 @@ export default function Sidebar() {
       </div>
 
       {/* Toggle button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="flex items-center justify-center h-12 w-full text-gray-500 hover:text-teal-600 hover:bg-teal-50 transition-colors"
-        aria-label="Toggle sidebar"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setExpanded(!expanded)}
+            className="w-full h-12 rounded-none text-gray-500 hover:text-teal-600 hover:bg-teal-100"
+            aria-label="Toggle sidebar"
+          >
+            <Menu className="w-5 h-5 transition-transform duration-200 hover:scale-110" />
+          </Button>
+        </TooltipTrigger>
+        {!expanded && <TooltipContent side="right">Toggle menu</TooltipContent>}
+      </Tooltip>
 
       {/* Search (only when expanded) */}
       {expanded && (
@@ -84,24 +95,35 @@ export default function Sidebar() {
       {/* Nav Items */}
       <nav className="flex-1 px-2 py-2 space-y-1 overflow-y-auto">
         {navItems.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors group",
-              item.active
-                ? "bg-teal-600 text-white"
-                : "text-gray-600 hover:bg-teal-50 hover:text-teal-700"
+          <Tooltip key={item.label}>
+            <TooltipTrigger asChild>
+              <Link
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group",
+                  item.active
+                    ? "bg-teal-600 text-white shadow-sm shadow-teal-200"
+                    : "text-gray-600 hover:bg-teal-100 hover:text-teal-700 hover:shadow-sm hover:shadow-teal-100"
+                )}
+              >
+                <item.icon
+                  className={cn(
+                    "w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
+                    item.active ? "text-white" : "text-gray-400 group-hover:text-teal-600"
+                  )}
+                />
+                {expanded && (
+                  <span className="flex-1 whitespace-nowrap overflow-hidden">{item.label}</span>
+                )}
+                {expanded && item.hasChildren && (
+                  <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                )}
+              </Link>
+            </TooltipTrigger>
+            {!expanded && (
+              <TooltipContent side="right">{item.label}</TooltipContent>
             )}
-          >
-            <item.icon className={cn("w-5 h-5 flex-shrink-0", item.active ? "text-white" : "text-gray-500 group-hover:text-teal-600")} />
-            {expanded && (
-              <span className="flex-1 whitespace-nowrap overflow-hidden">{item.label}</span>
-            )}
-            {expanded && item.hasChildren && (
-              <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            )}
-          </Link>
+          </Tooltip>
         ))}
       </nav>
 
@@ -109,34 +131,52 @@ export default function Sidebar() {
       <div className="border-t border-gray-100 p-3 space-y-1">
         {expanded ? (
           <div className="flex items-center gap-3 px-2 py-2 mb-1">
-            <div className="w-9 h-9 rounded-full bg-amber-400 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-              RS
-            </div>
+            <Avatar className="w-9 h-9 flex-shrink-0">
+              <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
+            </Avatar>
             <div className="overflow-hidden">
               <p className="text-sm font-medium text-gray-800 truncate">Dr. Ritika Shah</p>
-              <span className="text-[10px] bg-amber-400 text-white px-1.5 py-0.5 rounded font-medium">Admin</span>
+              <Badge className="text-[10px] bg-amber-400 hover:bg-amber-400 text-white px-1.5 py-0.5 rounded font-medium">Admin</Badge>
             </div>
           </div>
         ) : (
-          <div className="flex justify-center py-1">
-            <div className="w-9 h-9 rounded-full bg-amber-400 flex items-center justify-center text-white font-semibold text-sm">
-              RS
-            </div>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex justify-center py-1 cursor-pointer">
+                <Avatar className="w-9 h-9">
+                  <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
+                </Avatar>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right">Dr. Ritika Shah</TooltipContent>
+          </Tooltip>
         )}
 
-        <Link
-          href="/settings"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors"
-        >
-          <Settings className="w-5 h-5 flex-shrink-0 text-gray-500" />
-          {expanded && <span>Settings</span>}
-        </Link>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href="/settings"
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group"
+            >
+              <Settings className="w-5 h-5 flex-shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
+              {expanded && <span>Settings</span>}
+            </Link>
+          </TooltipTrigger>
+          {!expanded && <TooltipContent side="right">Settings</TooltipContent>}
+        </Tooltip>
 
-        <button className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors w-full">
-          <LogOut className="w-5 h-5 flex-shrink-0" />
-          {expanded && <span>Log out</span>}
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center justify-start gap-3 rounded-xl px-3 py-2 h-auto text-sm text-red-400 hover:bg-red-50 hover:text-red-600 w-full group"
+            >
+              <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+              {expanded && <span>Log out</span>}
+            </Button>
+          </TooltipTrigger>
+          {!expanded && <TooltipContent side="right">Log out</TooltipContent>}
+        </Tooltip>
       </div>
     </aside>
   );

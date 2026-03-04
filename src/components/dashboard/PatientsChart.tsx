@@ -9,6 +9,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const data = [
   { month: "Jan", male: 30, female: 20, inPerson: 35, online: 28 },
@@ -26,7 +28,8 @@ const data = [
 
 export default function PatientsChart() {
   return (
-    <div className="bg-white rounded-2xl p-5 flex-1">
+    <Card className="rounded-2xl flex-1 shadow-sm border-gray-100">
+    <CardContent className="p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
@@ -36,12 +39,16 @@ export default function PatientsChart() {
           </div>
           <span className="font-semibold text-gray-800">Patients Visits</span>
         </div>
-        <button className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
-          Monthly
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+        <Select defaultValue="monthly">
+          <SelectTrigger className="w-28 h-8 text-sm text-gray-500 border-none shadow-none focus:ring-0">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="weekly">Weekly</SelectItem>
+            <SelectItem value="monthly">Monthly</SelectItem>
+            <SelectItem value="yearly">Yearly</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <ResponsiveContainer width="100%" height={180}>
@@ -79,6 +86,7 @@ export default function PatientsChart() {
           <span>Online</span>
         </div>
       </div>
-    </div>
+    </CardContent>
+    </Card>
   );
 }

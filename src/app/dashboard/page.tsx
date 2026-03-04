@@ -3,6 +3,11 @@
 import { ChevronLeft, ChevronRight, Share2, TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
 import PatientsChart from "@/components/dashboard/PatientsChart";
 import AppointmentsPanel from "@/components/dashboard/AppointmentsPanel";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const stats = [
   {
@@ -88,7 +93,7 @@ function DonutChart({ percent }: { percent: number }) {
 
 function StatCard({ stat }: { stat: (typeof stats)[0] }) {
   return (
-    <div className="bg-white rounded-2xl p-4 flex flex-col gap-3 min-w-0">
+    <Card className="rounded-2xl p-4 flex flex-col gap-3 min-w-0 shadow-sm border-gray-100">
       {stat.donut ? (
         <div className="flex flex-col items-start gap-2">
           <div className="flex items-center gap-2">
@@ -129,7 +134,7 @@ function StatCard({ stat }: { stat: (typeof stats)[0] }) {
           </div>
         </>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -139,28 +144,26 @@ export default function DashboardPage() {
       {/* Top header */}
       <header className="flex items-center justify-between px-6 py-4 bg-gray-50 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-white font-bold text-lg">
-            RS
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-teal-700">Hi! Dr. Ritika Sahu</h1>
-          </div>
+          <Avatar className="w-12 h-12">
+            <AvatarFallback className="bg-amber-400 text-white font-bold text-lg">RS</AvatarFallback>
+          </Avatar>
+          <h1 className="text-2xl font-bold text-teal-700">Hi! Dr. Ritika Sahu</h1>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 border border-gray-200 shadow-sm">
-            <button className="text-gray-400 hover:text-gray-600">
+            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400 hover:text-gray-600">
               <ChevronLeft className="w-4 h-4" />
-            </button>
+            </Button>
             <span className="text-sm font-medium text-gray-700">Jun 24, 2022</span>
-            <span className="text-sm text-teal-600 font-semibold">Today</span>
-            <button className="text-gray-400 hover:text-gray-600">
+            <Badge variant="outline" className="text-teal-600 border-teal-200 bg-teal-50 text-xs">Today</Badge>
+            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400 hover:text-gray-600">
               <ChevronRight className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
-          <button className="flex items-center gap-2 bg-teal-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-teal-700 transition-colors shadow-sm">
+          <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl shadow-sm">
             <Share2 className="w-4 h-4" />
             Invite
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -168,14 +171,18 @@ export default function DashboardPage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Scrollable main area */}
         <main className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-          {/* Weekly selector */}
+          {/* Period selector */}
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 hover:text-gray-900">
-              Weekly
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+            <Select defaultValue="weekly">
+              <SelectTrigger className="w-28 h-8 text-sm font-semibold text-gray-700 border-none shadow-none focus:ring-0 px-0">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Stats grid */}
@@ -190,79 +197,81 @@ export default function DashboardPage() {
             <PatientsChart />
 
             {/* Revenue card */}
-            <div className="bg-white rounded-2xl p-5 w-48 flex-shrink-0 flex flex-col justify-between">
-              <p className="font-semibold text-gray-800 text-sm">Revenues</p>
-              <div>
-                <div className="flex items-center gap-1">
+            <Card className="rounded-2xl w-48 flex-shrink-0 flex flex-col justify-between shadow-sm border-gray-100">
+              <CardHeader className="pb-0 pt-5 px-5">
+                <CardTitle className="text-sm font-semibold text-gray-800">Revenues</CardTitle>
+              </CardHeader>
+              <CardContent className="px-5 pb-5">
+                <div className="flex items-center gap-1 mt-2">
                   <span className="text-4xl font-bold text-gray-800">15%</span>
                   <ArrowUpRight className="w-6 h-6 text-teal-500" />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Increase compared to last week</p>
-              </div>
-              <button className="flex items-center gap-1 text-xs text-orange-500 font-medium hover:underline mt-2">
-                Revenues report
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+                <Button variant="link" className="text-orange-500 text-xs p-0 h-auto mt-2 gap-1 font-medium">
+                  Revenues report
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Chats + Lab Reports */}
           <div className="grid grid-cols-2 gap-4">
             {/* Chats */}
-            <div className="bg-white rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-1">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <h3 className="font-semibold text-gray-800">Chats</h3>
-              </div>
-              <p className="text-xs text-gray-400 mb-3">2 unread messages</p>
-              <div className="flex -space-x-2 mb-4">
-                {["RS", "AK", "VM", "NB"].map((init, i) => (
-                  <div
-                    key={i}
-                    className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
-                  >
-                    {init}
-                  </div>
-                ))}
-              </div>
-              <button className="flex items-center gap-1 text-sm text-orange-500 font-medium hover:underline">
-                All messages
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            <Card className="rounded-2xl shadow-sm border-gray-100">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  <h3 className="font-semibold text-gray-800">Chats</h3>
+                  <Badge className="ml-auto bg-orange-100 text-orange-600 hover:bg-orange-100 text-[10px]">2 unread</Badge>
+                </div>
+                <p className="text-xs text-gray-400 mb-3">2 unread messages</p>
+                <div className="flex -space-x-2 mb-4">
+                  {["RS", "AK", "VM", "NB"].map((init, i) => (
+                    <Avatar key={i} className="w-9 h-9 border-2 border-white">
+                      <AvatarFallback className="bg-gradient-to-br from-teal-400 to-blue-500 text-white text-xs font-semibold">{init}</AvatarFallback>
+                    </Avatar>
+                  ))}
+                </div>
+                <Button variant="link" className="text-orange-500 text-sm p-0 h-auto gap-1 font-medium">
+                  All messages
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* Lab Reports */}
-            <div className="bg-white rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-1">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3 className="font-semibold text-gray-800">Lab Reports</h3>
-              </div>
-              <p className="text-xs text-gray-400 mb-3">2 unread messages</p>
-              <div className="flex -space-x-2 mb-4">
-                {["RK", "SP", "LI", "AR"].map((init, i) => (
-                  <div
-                    key={i}
-                    className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
-                  >
-                    {init}
-                  </div>
-                ))}
-              </div>
-              <button className="flex items-center gap-1 text-sm text-orange-500 font-medium hover:underline">
-                All messages
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            <Card className="rounded-2xl shadow-sm border-gray-100">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <h3 className="font-semibold text-gray-800">Lab Reports</h3>
+                  <Badge className="ml-auto bg-orange-100 text-orange-600 hover:bg-orange-100 text-[10px]">2 unread</Badge>
+                </div>
+                <p className="text-xs text-gray-400 mb-3">2 unread messages</p>
+                <div className="flex -space-x-2 mb-4">
+                  {["RK", "SP", "LI", "AR"].map((init, i) => (
+                    <Avatar key={i} className="w-9 h-9 border-2 border-white">
+                      <AvatarFallback className="bg-gradient-to-br from-purple-400 to-pink-500 text-white text-xs font-semibold">{init}</AvatarFallback>
+                    </Avatar>
+                  ))}
+                </div>
+                <Button variant="link" className="text-orange-500 text-sm p-0 h-auto gap-1 font-medium">
+                  All messages
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </main>
 

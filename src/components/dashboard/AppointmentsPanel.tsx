@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { ChevronDown, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
 type Appointment = {
   time: string;
@@ -38,12 +43,13 @@ export default function AppointmentsPanel() {
 
   return (
     <div className="w-80 flex-shrink-0 bg-white border-l border-gray-100 flex flex-col h-screen overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <div className="flex items-center justify-between px-5 py-4">
         <h2 className="font-bold text-gray-800 text-base">Today's Appointments</h2>
-        <button className="text-teal-600 text-sm font-medium hover:underline">View All</button>
+        <Button variant="link" className="text-teal-600 text-sm p-0 h-auto font-medium">View All</Button>
       </div>
+      <Separator />
 
-      <div className="flex-1 overflow-y-auto px-4 py-2">
+      <ScrollArea className="flex-1 px-4 py-2">
         {appointments.map((appt, idx) => (
           <div key={idx} className="relative">
             {/* Time dot row */}
@@ -91,6 +97,9 @@ export default function AppointmentsPanel() {
               >
                 {appt.name}
               </span>
+              {appt.status === "current" && (
+                <Badge className="bg-teal-100 text-teal-700 hover:bg-teal-100 text-[10px] px-1.5 py-0.5 ml-1">Now</Badge>
+              )}
 
               {appt.status === "current" && (
                 <ChevronDown
@@ -119,21 +128,21 @@ export default function AppointmentsPanel() {
                   ))}
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                  <button className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-500 hover:bg-red-200 transition-colors">
+                  <Button variant="ghost" size="icon" className="w-8 h-8 rounded-lg bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-600">
                     <Trash2 className="w-4 h-4" />
-                  </button>
-                  <button className="flex items-center gap-1.5 bg-teal-600 text-white text-xs font-medium px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors">
+                  </Button>
+                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     Join Now
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
           </div>
         ))}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
