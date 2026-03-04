@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Home,
   CalendarDays,
+  ClipboardList,
   Users,
   Bell,
   MessageSquare,
@@ -22,17 +24,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
-  { icon: Home, label: "Home", href: "/" },
-  { icon: CalendarDays, label: "Appointments", href: "/appointments" },
-  { icon: Users, label: "Patients", href: "/patients", hasChildren: true },
-  { icon: CalendarDays, label: "Calendar", href: "/calendar" },
-  { icon: Bell, label: "Notifications", href: "/notifications" },
-  { icon: MessageSquare, label: "Messages", href: "/messages" },
+  { icon: LayoutDashboard, label: "Dashboard",     href: "/dashboard"     },
+  { icon: Home,             label: "Home",          href: "/home"          },
+  { icon: ClipboardList,    label: "Appointments",  href: "/appointments"  },
+  { icon: Users,            label: "Patients",      href: "/patients",     hasChildren: true },
+  { icon: CalendarDays,     label: "Calendar",      href: "/calendar"      },
+  { icon: Bell,             label: "Notifications", href: "/notifications" },
+  { icon: MessageSquare,    label: "Messages",      href: "/messages"      },
 ];
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(false);
+  const pathname = usePathname();
 
   return (
     <aside
@@ -94,14 +97,16 @@ export default function Sidebar() {
 
       {/* Nav Items */}
       <nav className="flex-1 px-2 py-2 space-y-1 overflow-y-auto">
-        {navItems.map((item) => (
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+          return (
           <Tooltip key={item.label}>
             <TooltipTrigger asChild>
               <Link
                 href={item.href}
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group",
-                  item.active
+                  isActive
                     ? "bg-teal-600 text-white shadow-sm shadow-teal-200"
                     : "text-gray-600 hover:bg-teal-100 hover:text-teal-700 hover:shadow-sm hover:shadow-teal-100"
                 )}
@@ -109,7 +114,7 @@ export default function Sidebar() {
                 <item.icon
                   className={cn(
                     "w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
-                    item.active ? "text-white" : "text-gray-400 group-hover:text-teal-600"
+                    isActive ? "text-white" : "text-gray-400 group-hover:text-teal-600"
                   )}
                 />
                 {expanded && (
@@ -124,7 +129,8 @@ export default function Sidebar() {
               <TooltipContent side="right">{item.label}</TooltipContent>
             )}
           </Tooltip>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Bottom: User profile */}
