@@ -173,13 +173,13 @@ export default function Sidebar() {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex items-center justify-start gap-3 rounded-xl px-3 py-2 h-auto text-sm text-red-400 hover:bg-red-50 hover:text-red-600 w-full group"
+            <Link
+              href="/logout"
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
             >
               <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
               {expanded && <span>Log out</span>}
-            </Button>
+            </Link>
           </TooltipTrigger>
           {!expanded && <TooltipContent side="right">Log out</TooltipContent>}
         </Tooltip>
