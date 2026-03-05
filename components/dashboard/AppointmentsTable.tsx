@@ -103,10 +103,8 @@ export default function AppointmentsTable() {
 
   const handleJoin = useCallback(async (id: number) => {
     setJoinStates((prev) => ({ ...prev, [id]: "joining" }));
-    console.log(`[Dashboard] Joining appointment #${id}…`);
     await simulateAsync(null, 1800);
     setJoinStates((prev) => ({ ...prev, [id]: "connected" }));
-    console.log(`[Dashboard] Connected to appointment #${id}.`);
   }, []);
 
   const filtered =
