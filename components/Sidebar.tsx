@@ -48,7 +48,7 @@ export default function Sidebar() {
       <div className="flex items-center h-16 px-4 border-b border-gray-100">
         {expanded ? (
           <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8 h-8 bg-teal-600 rounded-md flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-teal-600 rounded-md flex items-center justify-center shrink-0">
               <Plus className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col leading-tight">
@@ -113,7 +113,7 @@ export default function Sidebar() {
               >
                 <item.icon
                   className={cn(
-                    "w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
+                    "w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110",
                     isActive ? "text-white" : "text-gray-400 group-hover:text-teal-600"
                   )}
                 />
@@ -121,7 +121,7 @@ export default function Sidebar() {
                   <span className="flex-1 whitespace-nowrap overflow-hidden">{item.label}</span>
                 )}
                 {expanded && item.hasChildren && (
-                  <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
                 )}
               </Link>
             </TooltipTrigger>
@@ -137,7 +137,7 @@ export default function Sidebar() {
       <div className="border-t border-gray-100 p-3 space-y-1">
         {expanded ? (
           <div className="flex items-center gap-3 px-2 py-2 mb-1">
-            <Avatar className="w-9 h-9 flex-shrink-0">
+            <Avatar className="w-9 h-9 shrink-0">
               <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
             </Avatar>
             <div className="overflow-hidden">
@@ -164,7 +164,7 @@ export default function Sidebar() {
               href="/settings"
               className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group"
             >
-              <Settings className="w-5 h-5 flex-shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
+              <Settings className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
               {expanded && <span>Settings</span>}
             </Link>
           </TooltipTrigger>
@@ -177,7 +177,7 @@ export default function Sidebar() {
               href="/logout"
               className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
             >
-              <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+              <LogOut className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
               {expanded && <span>Log out</span>}
             </Link>
           </TooltipTrigger>
