@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import DashboardShell from "@/components/dashboard/DashboardShell";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <DashboardShell>{children}</DashboardShell>
+        {children}
         <Toaster position="top-right" richColors />
       </body>
     </html>

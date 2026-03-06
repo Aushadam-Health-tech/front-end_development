@@ -85,7 +85,7 @@ export default function SettingsPage() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar nav */}
-        <div className="w-56 bg-white border-r border-gray-100 py-4 flex-shrink-0">
+        <div className="w-56 bg-white border-r border-gray-100 py-4 shrink-0">
           {sections.map((s) => (
             <button
               key={s.id}
@@ -246,7 +246,7 @@ export default function SettingsPage() {
                       <ul className="space-y-2 mb-5">
                         {p.features.map((f) => (
                           <li key={f} className="flex items-center gap-2 text-xs text-gray-600">
-                            <Check className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
+                            <Check className="w-3.5 h-3.5 text-teal-500 shrink-0" />
                             {f}
                           </li>
                         ))}

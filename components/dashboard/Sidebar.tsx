@@ -21,11 +21,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { icon: Home,          label: "Home",          href: "/"             },
-  { icon: Calendar,      label: "Calendar",      href: "/calendar"     },
-  { icon: Users,         label: "Patients",      href: "/patients"     },
-  { icon: MessageSquare, label: "Messages",      href: "/messages"     },
-  { icon: Bell,          label: "Notifications", href: "/notifications"},
+  { icon: Home,          label: "Home",          href: "/pranjal"             },
+  { icon: Calendar,      label: "Calendar",      href: "/pranjal/calendar"     },
+  { icon: Users,         label: "Patients",      href: "/pranjal/patients"     },
+  { icon: MessageSquare, label: "Messages",      href: "/pranjal/messages"     },
+  { icon: Bell,          label: "Notifications", href: "/pranjal/notifications"},
 ];
 
 const bottomNavItems = [

@@ -158,7 +158,7 @@ export default function Header() {
         </div>
 
         {/* Switch UI Button */}
-        <Link href="/sid/dashboard">
+        <Link href="/dashboard">
           <Button
             variant="outline"
             className="rounded-xl gap-2 px-4 border-teal-200 text-teal-700 hover:bg-teal-50 hover:border-teal-400"
