@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -38,6 +39,7 @@ import {
   Mail,
   User,
   Building2,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 import { mockDates } from "@/data/mockData";
@@ -154,6 +156,17 @@ export default function Header() {
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
+
+        {/* Switch UI Button */}
+        <Link href="/sid/dashboard">
+          <Button
+            variant="outline"
+            className="rounded-xl gap-2 px-4 border-teal-200 text-teal-700 hover:bg-teal-50 hover:border-teal-400"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Switch to New UI
+          </Button>
+        </Link>
 
         {/* Invite Button */}
         <Button

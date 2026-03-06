@@ -16,6 +16,7 @@ import {
   Menu,
   ChevronDown,
   Plus,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -169,6 +170,19 @@ export default function Sidebar() {
             </Link>
           </TooltipTrigger>
           {!expanded && <TooltipContent side="right">Settings</TooltipContent>}
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href="/"
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-teal-600 hover:bg-teal-50 hover:text-teal-800 transition-all duration-200 group"
+            >
+              <ArrowLeft className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5" />
+              {expanded && <span>Back to Main</span>}
+            </Link>
+          </TooltipTrigger>
+          {!expanded && <TooltipContent side="right">Back to Main</TooltipContent>}
         </Tooltip>
 
         <Tooltip>
