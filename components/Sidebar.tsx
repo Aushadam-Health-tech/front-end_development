@@ -16,7 +16,6 @@ import {
   Menu,
   ChevronDown,
   Plus,
-  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -32,6 +31,12 @@ const navItems = [
   { icon: CalendarDays,     label: "Calendar",      href: "/calendar"      },
   { icon: Bell,             label: "Notifications", href: "/notifications" },
   { icon: MessageSquare,    label: "Messages",      href: "/messages"      },
+];
+
+const pranjalNavItems = [
+  { icon: LayoutDashboard, label: "Pranjal Dashboard", href: "/pranjal"           },
+  { icon: CalendarDays,     label: "Pranjal Calendar",  href: "/pranjal/calendar" },
+  { icon: Users,            label: "Pranjal Patients",  href: "/pranjal/patients" },
 ];
 
 export default function Sidebar() {
@@ -132,6 +137,43 @@ export default function Sidebar() {
           </Tooltip>
           );
         })}
+
+        {/* Separator */}
+        {expanded && <div className="my-2 px-3"><div className="h-px bg-gray-200" /></div>}
+        {!expanded && <div className="my-2 px-2"><div className="h-px bg-gray-200" /></div>}
+
+        {/* Pranjal Nav Items */}
+        {pranjalNavItems.map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+          return (
+          <Tooltip key={item.label}>
+            <TooltipTrigger asChild>
+              <Link
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group",
+                  isActive
+                    ? "bg-purple-600 text-white shadow-sm shadow-purple-200"
+                    : "text-gray-600 hover:bg-purple-100 hover:text-purple-700 hover:shadow-sm hover:shadow-purple-100"
+                )}
+              >
+                <item.icon
+                  className={cn(
+                    "w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110",
+                    isActive ? "text-white" : "text-gray-400 group-hover:text-purple-600"
+                  )}
+                />
+                {expanded && (
+                  <span className="flex-1 whitespace-nowrap overflow-hidden">{item.label}</span>
+                )}
+              </Link>
+            </TooltipTrigger>
+            {!expanded && (
+              <TooltipContent side="right">{item.label}</TooltipContent>
+            )}
+          </Tooltip>
+          );
+        })}
       </nav>
 
       {/* Bottom: User profile */}
@@ -170,23 +212,6 @@ export default function Sidebar() {
             </Link>
           </TooltipTrigger>
           {!expanded && <TooltipContent side="right">Settings</TooltipContent>}
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href="/pranjal"
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 group",
-                "bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 hover:border-teal-400",
-                !expanded && "justify-center"
-              )}
-            >
-              <ArrowLeft className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" />
-              {expanded && <span>Classic UI</span>}
-            </Link>
-          </TooltipTrigger>
-          {!expanded && <TooltipContent side="right">Switch to Classic UI</TooltipContent>}
         </Tooltip>
 
         <Tooltip>
