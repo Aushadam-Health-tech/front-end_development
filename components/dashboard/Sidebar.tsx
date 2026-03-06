@@ -14,7 +14,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
-  Briefcase,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -25,7 +24,6 @@ const navItems = [
   { icon: Home,          label: "Home",          href: "/"             },
   { icon: Calendar,      label: "Calendar",      href: "/calendar"     },
   { icon: Users,         label: "Patients",      href: "/patients"     },
-  { icon: Briefcase,     label: "Projects",      href: "/projects"     },
   { icon: MessageSquare, label: "Messages",      href: "/messages"     },
   { icon: Bell,          label: "Notifications", href: "/notifications"},
 ];
@@ -136,14 +134,6 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 )}
               />
               {!collapsed && <span className="truncate">{label}</span>}
-              {/* Left accent bar — shown when expanded */}
-              {isActive && !collapsed && (
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-emerald-500 shrink-0" />
-              )}
-              {/* Active dot — shown when collapsed */}
-              {isActive && collapsed && (
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500" />
-              )}
               {!collapsed && isActive && (
                 <span className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
               )}
@@ -164,19 +154,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
               href={href}
               title={collapsed ? label : undefined}
               className={cn(
-                "relative flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150 group",
+                "flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150 group",
                 isActive
-                  ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+                  ? "bg-emerald-50 text-emerald-700"
                   : "text-gray-500 hover:text-gray-800 hover:bg-gray-50",
                 collapsed && "justify-center"
               )}
             >
-              {isActive && !collapsed && (
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-emerald-500 shrink-0" />
-              )}
-              {isActive && collapsed && (
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-500" />
-              )}
               <Icon className={cn("w-5 h-5 shrink-0", isActive ? "text-emerald-600" : "text-gray-400 group-hover:text-gray-600")} />
               {!collapsed && <span className="truncate">{label}</span>}
               {!collapsed && isActive && (
