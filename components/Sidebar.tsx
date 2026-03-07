@@ -15,13 +15,91 @@ import {
   LogOut,
   Menu,
   ChevronDown,
-  Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+/**
+ * AushodamLogo — two teardrop halves meeting at inner tips
+ *
+ * viewBox 0 0 500 400
+ * Tips touch at (250, 140).
+ *
+ * LEFT  teardrop: tip upper-right → fat rounded bulb lower-left. Solid teal.
+ * RIGHT teardrop: tip upper-left  → fat rounded bulb lower-right. Grey outline.
+ *
+ * Each teardrop = two straight edges from tip + large arc connecting them.
+ * Arc r=190, sweeps ~112° around the outside.
+ *
+ * 5 icon circles float above the meeting point.
+ */
+function AushodamLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 500 400"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-label="Aushodam logo"
+    >
+      {/* ── LEFT teardrop: solid teal ── */}
+      {/* tip(250,140) → upper-left(70,60) → arc bulging left → lower(120,370) → back to tip */}
+      <path
+        d="M 250,140 L 70,60 A 190,190 0 0 1 120,370 Z"
+        fill="#2C7F73"
+      />
+
+      {/* ── RIGHT teardrop: grey outline only (mirror) ── */}
+      <path
+        d="M 250,140 L 430,60 A 190,190 0 0 0 380,370 Z"
+        fill="none"
+        stroke="#6F7C76"
+        strokeWidth="14"
+        strokeLinejoin="round"
+      />
+
+      {/* ══ 1 – Mortar & Pestle  (top center: 250, 18) ══ */}
+      <circle cx="250" cy="18" r="18" fill="#2C7F73" />
+      <line x1="243" y1="9" x2="257" y2="9" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <line x1="250" y1="9" x2="250" y2="19" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="240" y1="19" x2="260" y2="19" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M 241,19 L 240,25 Q 250,30 260,25 L 259,19" stroke="white" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+
+      {/* ══ 2 – Stethoscope  (left: 202, 58) ══ */}
+      <circle cx="202" cy="58" r="16" fill="#2C7F73" />
+      <line x1="196" y1="49" x2="195" y2="53" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="208" y1="49" x2="209" y2="53" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M 195,53 Q 193,59 197,63 Q 201,68 206,67 Q 211,66 212,60 Q 212,55 209,53"
+        fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="209" cy="52" r="3" stroke="white" strokeWidth="1.5" fill="none" />
+
+      {/* ══ 3 – Microscope  (right: 298, 58) ══ */}
+      <circle cx="298" cy="58" r="16" fill="#2C7F73" />
+      <line x1="291" y1="68" x2="305" y2="68" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <line x1="298" y1="68" x2="298" y2="51" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <line x1="298" y1="57" x2="305" y2="57" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="305" y1="57" x2="305" y2="50" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <line x1="302" y1="50" x2="308" y2="50" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
+      <line x1="292" y1="62" x2="304" y2="62" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* ══ 4 – Ambulance  (center: 250, 95) ══ */}
+      <circle cx="250" cy="95" r="15" fill="#2C7F73" />
+      <rect x="240" y="89" width="20" height="10" rx="2" stroke="white" strokeWidth="1.6" fill="none" />
+      <circle cx="245" cy="99.5" r="2.2" fill="white" />
+      <circle cx="255" cy="99.5" r="2.2" fill="white" />
+      <line x1="250" y1="91" x2="250" y2="97" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="247" y1="94" x2="253" y2="94" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+
+      {/* ══ 5 – Pill  (just above tip: 250, 128) ══ */}
+      <circle cx="250" cy="128" r="13" fill="#2C7F73" />
+      <rect x="239" y="124" width="22" height="9" rx="4.5" stroke="white" strokeWidth="1.8" fill="none" />
+      <line x1="250" y1="124" x2="250" y2="133" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard",     href: "/dashboard"     },
@@ -54,18 +132,14 @@ export default function Sidebar() {
       <div className="flex items-center h-16 px-4 border-b border-gray-100">
         {expanded ? (
           <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8 h-8 bg-teal-600 rounded-md flex items-center justify-center shrink-0">
-              <Plus className="w-5 h-5 text-white" />
-            </div>
+            <AushodamLogo className="w-10 h-auto shrink-0" />
             <div className="flex flex-col leading-tight">
-              <span className="text-teal-700 font-bold text-sm tracking-wide">AUSHADHAM</span>
+              <span className="text-teal-700 font-bold text-sm tracking-widest">AUSHODAM</span>
               <span className="text-gray-400 text-[10px]">Hospital or clinic Name</span>
             </div>
           </div>
         ) : (
-          <div className="w-8 h-8 bg-teal-600 rounded-md flex items-center justify-center mx-auto">
-            <Plus className="w-5 h-5 text-white" />
-          </div>
+          <AushodamLogo className="w-9 h-auto mx-auto" />
         )}
       </div>
 
