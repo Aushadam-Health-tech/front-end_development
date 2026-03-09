@@ -191,7 +191,7 @@ export default function DashboardPage() {
             <PatientsChart />
 
             {/* Revenue card */}
-            <Card className="rounded-2xl w-48 flex-shrink-0 flex flex-col justify-between shadow-sm border-gray-100">
+            <Card className="rounded-2xl w-48 shrink-0 flex flex-col justify-between shadow-sm border-gray-100">
               <CardHeader className="pb-0 pt-5 px-5">
                 <CardTitle className="text-sm font-semibold text-gray-800">Revenues</CardTitle>
               </CardHeader>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                 <div className="flex -space-x-2 mb-4">
                   {["RS", "AK", "VM", "NB"].map((init, i) => (
                     <Avatar key={i} className="w-9 h-9 border-2 border-white">
-                      <AvatarFallback className="bg-gradient-to-br from-teal-400 to-blue-500 text-white text-xs font-semibold">{init}</AvatarFallback>
+                      <AvatarFallback className="bg-linear-to-br from-teal-400 to-blue-500 text-white text-xs font-semibold">{init}</AvatarFallback>
                     </Avatar>
                   ))}
                 </div>
@@ -254,7 +254,7 @@ export default function DashboardPage() {
                 <div className="flex -space-x-2 mb-4">
                   {["RK", "SP", "LI", "AR"].map((init, i) => (
                     <Avatar key={i} className="w-9 h-9 border-2 border-white">
-                      <AvatarFallback className="bg-gradient-to-br from-purple-400 to-pink-500 text-white text-xs font-semibold">{init}</AvatarFallback>
+                      <AvatarFallback className="bg-linear-to-br from-purple-400 to-pink-500 text-white text-xs font-semibold">{init}</AvatarFallback>
                     </Avatar>
                   ))}
                 </div>
