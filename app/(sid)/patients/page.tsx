@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DateSelector } from "@/components/DateSelector";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
@@ -51,10 +52,13 @@ export default function PatientsPage() {
           <h1 className="text-2xl font-bold text-gray-800">Patients</h1>
           <p className="text-gray-500 text-sm mt-0.5">{patients.length} total patients registered</p>
         </div>
-        <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl">
-          <Plus className="w-4 h-4" />
-          Add Patient
-        </Button>
+        <div className="flex items-center gap-3">
+          <DateSelector />
+          <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl">
+            <Plus className="w-4 h-4" />
+            Add Patient
+          </Button>
+        </div>
       </header>
 
       <div className="px-6 py-5 space-y-4">
@@ -106,7 +110,7 @@ export default function PatientsPage() {
             <Card key={p.id} className="rounded-2xl shadow-sm border-gray-100 hover:shadow-md transition-shadow group cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <Avatar className="w-11 h-11 flex-shrink-0">
+                  <Avatar className="w-11 h-11 shrink-0">
                     <AvatarFallback className={`font-semibold text-sm ${genderColor(p.gender)}`}>
                       {p.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                     </AvatarFallback>

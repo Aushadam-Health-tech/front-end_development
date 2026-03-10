@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DateSelector } from "@/components/DateSelector";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,10 +17,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ChevronLeft,
-  ChevronRight,
   ChevronDown,
-  UserPlus,
+  ChevronRight,
+  Share2,
   Video,
   FileText,
   Activity,
@@ -55,17 +55,9 @@ export default function HomePage() {
           <h1 className="text-xl font-bold text-teal-700">Hi! Dr. Ritika Sahu</h1>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-gray-50 rounded-xl px-3 py-2 border border-gray-200">
-            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400">
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <span className="text-sm font-medium text-gray-700 px-2">Jun 24, 2022 <span className="text-emerald-600 font-semibold">Today</span></span>
-            <Button variant="ghost" size="icon" className="w-6 h-6 text-gray-400">
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl gap-2 px-4">
-            <UserPlus className="w-4 h-4" />
+          <DateSelector />
+          <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm">
+            <Share2 className="w-4 h-4" />
             Invite
           </Button>
         </div>
@@ -119,53 +111,55 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Table Rows */}
-              <div className="divide-y divide-gray-50">
-                {appointments.map((apt, idx) => (
-                  <div
-                    key={idx}
-                    className={`grid grid-cols-[100px_1fr_1fr_120px_140px] gap-3 px-3 py-3.5 items-center rounded-xl ${
-                      apt.active ? "bg-teal-600/5 border-l-2 border-l-teal-600" : "hover:bg-gray-50"
-                    }`}
-                  >
-                    <span className="text-sm text-gray-600 font-medium">{apt.time}</span>
-                    <div className="flex items-center gap-2">
-                      <Avatar className="w-9 h-9 shrink-0">
-                        <AvatarFallback className={`${apt.color} text-gray-700 text-xs font-semibold`}>{apt.initials}</AvatarFallback>
-                      </Avatar>
-                      <span className="text-sm text-gray-800 font-medium">{apt.name}</span>
+              {/* Table Rows - Scrollable */}
+              <ScrollArea className="h-100">
+                <div className="divide-y divide-gray-50">
+                  {appointments.map((apt, idx) => (
+                    <div
+                      key={idx}
+                      className={`grid grid-cols-[100px_1fr_1fr_120px_140px] gap-3 px-3 py-3.5 items-center rounded-xl ${
+                        apt.active ? "bg-teal-600/5 border-l-2 border-l-teal-600" : "hover:bg-gray-50"
+                      }`}
+                    >
+                      <span className="text-sm text-gray-600 font-medium">{apt.time}</span>
+                      <div className="flex items-center gap-2">
+                        <Avatar className="w-9 h-9 shrink-0">
+                          <AvatarFallback className={`${apt.color} text-gray-700 text-xs font-semibold`}>{apt.initials}</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-gray-800 font-medium">{apt.name}</span>
+                      </div>
+                      <span className="text-sm text-gray-600">{apt.reason}</span>
+                      <Badge
+                        variant="outline"
+                        className={`text-xs font-semibold rounded-full px-3 py-1 border ${
+                          apt.status === "In-clinic"
+                            ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                            : "bg-blue-100 text-blue-700 border-blue-200"
+                        }`}
+                      >
+                        {apt.status}
+                      </Badge>
+                      <Button
+                        size="sm"
+                        className={`rounded-xl text-xs h-8 px-4 gap-1.5 ${
+                          apt.active
+                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                            : "bg-gray-100 text-gray-400 hover:bg-gray-100 cursor-not-allowed"
+                        }`}
+                        disabled={!apt.active}
+                      >
+                        {apt.active && <Video className="w-3.5 h-3.5" />}
+                        Join Now
+                      </Button>
                     </div>
-                    <span className="text-sm text-gray-600">{apt.reason}</span>
-                    <Badge
-                      variant="outline"
-                      className={`text-xs font-semibold rounded-full px-3 py-1 border ${
-                        apt.status === "In-clinic"
-                          ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-                          : "bg-blue-100 text-blue-700 border-blue-200"
-                      }`}
-                    >
-                      {apt.status}
-                    </Badge>
-                    <Button
-                      size="sm"
-                      className={`rounded-xl text-xs h-8 px-4 gap-1.5 ${
-                        apt.active
-                          ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                          : "bg-gray-100 text-gray-400 hover:bg-gray-100 cursor-not-allowed"
-                      }`}
-                      disabled={!apt.active}
-                    >
-                      {apt.active && <Video className="w-3.5 h-3.5" />}
-                      Join Now
-                    </Button>
-                  </div>
-                ))}
+                  ))}
 
-                {/* Slot free row */}
-                <div className="py-4 text-center">
-                  <span className="text-sm text-blue-500 font-medium cursor-pointer hover:underline">Slot free</span>
+                  {/* Slot free row */}
+                  <div className="py-4 text-center">
+                    <span className="text-sm text-blue-500 font-medium cursor-pointer hover:underline">Slot free</span>
+                  </div>
                 </div>
-              </div>
+              </ScrollArea>
             </CardContent>
           </Card>
         </main>
@@ -187,28 +181,30 @@ export default function HomePage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col items-center gap-2 py-2">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center border border-emerald-100">
-                  <Activity className="w-7 h-7 text-emerald-600" />
+              <ScrollArea className="h-45">
+                <div className="flex flex-col items-center gap-2 py-2">
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center border border-emerald-100">
+                    <Activity className="w-7 h-7 text-emerald-600" />
+                  </div>
+                  <p className="text-sm text-gray-500 font-medium mt-1">In-process</p>
+                  <p className="text-5xl font-bold text-gray-800">40</p>
+                  <div className="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold bg-emerald-50 text-emerald-600">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    +12% vs last week
+                  </div>
                 </div>
-                <p className="text-sm text-gray-500 font-medium mt-1">In-process</p>
-                <p className="text-5xl font-bold text-gray-800">40</p>
-                <div className="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold bg-emerald-50 text-emerald-600">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  +12% vs last week
+                <Separator className="my-3" />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-400 font-medium mb-0.5">Completed</p>
+                    <p className="text-lg font-bold text-emerald-600">68</p>
+                  </div>
+                  <div className="text-center border-l border-gray-100">
+                    <p className="text-xs text-gray-400 font-medium mb-0.5">Cancelled</p>
+                    <p className="text-lg font-bold text-red-400">5</p>
+                  </div>
                 </div>
-              </div>
-              <Separator className="my-3" />
-              <div className="grid grid-cols-2 gap-2">
-                <div className="text-center">
-                  <p className="text-xs text-gray-400 font-medium mb-0.5">Completed</p>
-                  <p className="text-lg font-bold text-emerald-600">68</p>
-                </div>
-                <div className="text-center border-l border-gray-100">
-                  <p className="text-xs text-gray-400 font-medium mb-0.5">Cancelled</p>
-                  <p className="text-lg font-bold text-red-400">5</p>
-                </div>
-              </div>
+              </ScrollArea>
             </CardContent>
           </Card>
 
@@ -228,11 +224,10 @@ export default function HomePage() {
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="subscribed">
-                  <ScrollArea className="h-80">
-                    <div className="space-y-1">
-                      {updates.map((update, idx) => (
-                        <div key={idx}>
-                          <div className="flex items-start gap-3 py-3 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <div className="space-y-1">
+                    {updates.map((update, idx) => (
+                      <div key={idx}>
+                        <div className="flex items-start gap-3 py-3 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${update.unread ? "bg-amber-50 border border-amber-100" : "bg-gray-50 border border-gray-100"}`}>
                               <FileText className={`w-4 h-4 ${update.unread ? "text-amber-500" : "text-gray-400"}`} />
                             </div>
@@ -252,7 +247,6 @@ export default function HomePage() {
                         </div>
                       ))}
                     </div>
-                  </ScrollArea>
                 </TabsContent>
                 <TabsContent value="regular">
                   <p className="text-sm text-gray-400 text-center py-8">No regular updates</p>

@@ -129,7 +129,7 @@ export default function MessagesPage() {
   return (
     <div className="flex-1 flex overflow-hidden bg-gray-50">
       {/* Conversation list */}
-      <div className="w-72 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
+      <div className="w-72 bg-white border-r border-gray-100 flex flex-col shrink-0">
         <div className="px-4 py-4 border-b border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-3">Messages</h2>
           <div className="relative">
@@ -153,7 +153,7 @@ export default function MessagesPage() {
                 }`}
               >
                 <div className="relative">
-                  <Avatar className="w-10 h-10 flex-shrink-0">
+                  <Avatar className="w-10 h-10 shrink-0">
                     <AvatarFallback className={`text-xs font-semibold ${c.color}`}>{c.initials}</AvatarFallback>
                   </Avatar>
                   {c.online && (
@@ -163,12 +163,12 @@ export default function MessagesPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-gray-800 truncate">{c.name}</p>
-                    <span className="text-[10px] text-gray-400 flex-shrink-0">{c.lastTime}</span>
+                    <span className="text-[10px] text-gray-400 shrink-0">{c.lastTime}</span>
                   </div>
                   <div className="flex items-center justify-between mt-0.5">
                     <p className="text-xs text-gray-500 truncate">{c.lastMsg}</p>
                     {c.unread > 0 && (
-                      <Badge className="bg-teal-600 text-white text-[10px] px-1.5 py-0 ml-1 flex-shrink-0">{c.unread}</Badge>
+                      <Badge className="bg-teal-600 text-white text-[10px] px-1.5 py-0 ml-1 shrink-0">{c.unread}</Badge>
                     )}
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export default function MessagesPage() {
       {/* Chat window */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Chat header */}
-        <div className="bg-white border-b border-gray-100 px-5 py-3 flex items-center justify-between flex-shrink-0">
+        <div className="bg-white border-b border-gray-100 px-5 py-3 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="relative">
               <Avatar className="w-10 h-10">
@@ -212,10 +212,10 @@ export default function MessagesPage() {
               return (
                 <div key={msg.id} className={`flex items-end gap-2 ${isDoctor ? "flex-row-reverse" : "flex-row"}`}>
                   {showAvatar && !isDoctor ? (
-                    <Avatar className="w-7 h-7 flex-shrink-0 mb-0.5">
+                    <Avatar className="w-7 h-7 shrink-0 mb-0.5">
                       <AvatarFallback className={`text-[10px] font-semibold ${active.color}`}>{active.initials}</AvatarFallback>
                     </Avatar>
-                  ) : !isDoctor ? <div className="w-7 flex-shrink-0" /> : null}
+                  ) : !isDoctor ? <div className="w-7 shrink-0" /> : null}
 
                   <div className={`max-w-[65%] ${isDoctor ? "items-end" : "items-start"} flex flex-col`}>
                     <div className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
@@ -244,7 +244,7 @@ export default function MessagesPage() {
         <Separator />
 
         {/* Input bar */}
-        <div className="bg-white px-5 py-3 flex items-center gap-3 flex-shrink-0">
+        <div className="bg-white px-5 py-3 flex items-center gap-3 shrink-0">
           <Input
             placeholder={`Message ${active.name}...`}
             value={input}
@@ -255,7 +255,7 @@ export default function MessagesPage() {
           <Button
             onClick={sendMessage}
             disabled={!input.trim()}
-            className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl w-10 h-10 p-0 flex-shrink-0"
+            className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl w-10 h-10 p-0 shrink-0"
           >
             <Send className="w-4 h-4" />
           </Button>

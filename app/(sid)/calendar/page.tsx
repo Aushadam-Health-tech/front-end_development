@@ -182,10 +182,10 @@ function EventChip({ event, compact = false }: { event: CalEvent; compact?: bool
       )}
     >
       {event.isOnline
-        ? <Monitor className="w-2.5 h-2.5 flex-shrink-0" />
-        : <UserCheck className="w-2.5 h-2.5 flex-shrink-0" />}
+        ? <Monitor className="w-2.5 h-2.5 shrink-0" />
+        : <UserCheck className="w-2.5 h-2.5 shrink-0" />}
       {!compact && <span className="truncate">{event.startTime}</span>}
-      {event.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current" />}
+      {event.isSubscribed && <Star className="w-2 h-2 shrink-0 fill-current" />}
     </div>
   );
 }
@@ -278,10 +278,10 @@ function WeeklyView({
                           <>
                             <div className="flex items-center gap-1">
                               {e.isOnline
-                                ? <Monitor className="w-2.5 h-2.5 flex-shrink-0" />
-                                : <UserCheck className="w-2.5 h-2.5 flex-shrink-0" />}
+                                ? <Monitor className="w-2.5 h-2.5 shrink-0" />
+                                : <UserCheck className="w-2.5 h-2.5 shrink-0" />}
                               <span className="truncate">{e.patient.split(" ")[0]}</span>
-                              {e.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current ml-auto" />}
+                              {e.isSubscribed && <Star className="w-2 h-2 shrink-0 fill-current ml-auto" />}
                             </div>
                             {height > 32 && (
                               <div className="flex items-center gap-0.5 mt-0.5 opacity-70">
@@ -354,7 +354,7 @@ function DailyView({
                 <span className="font-semibold text-sm truncate">
                   {e.location === "Leave" ? "Leave" : e.patient}
                 </span>
-                {e.isSubscribed && <Star className="w-3 h-3 fill-current flex-shrink-0" />}
+                {e.isSubscribed && <Star className="w-3 h-3 fill-current shrink-0" />}
               </div>
               {height > 36 && e.location !== "Leave" && (
                 <div className="flex items-center gap-3 mt-1 text-xs opacity-80">
@@ -425,7 +425,7 @@ function MonthlyView({
               key={day}
               onClick={() => onSelectDay(day)}
               className={cn(
-                "min-h-[90px] rounded-xl p-2 cursor-pointer border transition-all",
+                "min-h-22.5 rounded-xl p-2 cursor-pointer border transition-all",
                 active
                   ? "border-teal-500 bg-teal-50 shadow-sm"
                   : "border-gray-100 bg-white hover:border-teal-200 hover:bg-teal-50/30",
@@ -518,7 +518,7 @@ export default function CalendarPage() {
   return (
     <div className="flex-1 overflow-hidden bg-gray-50 flex flex-col">
       {/* ── Page header ── */}
-      <header className="px-6 py-4 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0">
+      <header className="px-6 py-4 bg-white border-b border-gray-100 flex items-center justify-between shrink-0">
         <div>
           <h1 className="text-xl font-bold text-gray-800">Your Calendar</h1>
         </div>
@@ -528,7 +528,7 @@ export default function CalendarPage() {
       </header>
 
       {/* ── Toolbar ── */}
-      <div className="px-6 py-3 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-3">
+      <div className="px-6 py-3 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 flex-wrap gap-3">
         {/* Month + nav */}
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-bold text-gray-800 w-48">{monthLabel}</h2>
@@ -566,7 +566,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── Legend + Filters ── */}
-      <div className="px-6 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
+      <div className="px-6 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 flex-wrap gap-2">
         {/* Location legend */}
         <div className="flex items-center gap-4">
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Location</span>

@@ -110,18 +110,18 @@ export default function NotificationsPage() {
                     key={n.id}
                     className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${n.read ? "bg-white" : "bg-teal-50/60 border border-teal-100"}`}
                   >
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${cfg.bg}`}>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${cfg.bg}`}>
                       <Icon className={`w-4 h-4 ${cfg.color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <p className={`text-sm font-semibold ${n.read ? "text-gray-700" : "text-gray-900"}`}>{n.title}</p>
-                        {!n.read && <span className="w-2 h-2 rounded-full bg-teal-500 flex-shrink-0" />}
+                        {!n.read && <span className="w-2 h-2 rounded-full bg-teal-500 shrink-0" />}
                       </div>
                       <p className="text-xs text-gray-500 leading-relaxed">{n.body}</p>
                       <p className="text-[10px] text-gray-400 mt-1">{n.time}</p>
                     </div>
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1 shrink-0">
                       {!n.read && (
                         <Button
                           variant="ghost" size="icon"
