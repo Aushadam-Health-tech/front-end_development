@@ -181,10 +181,10 @@ function EventChip({ event }: { event: CalEvent }) {
   return (
     <Badge variant="outline" className={cn("rounded-md px-2 py-0.5 gap-1 text-[10px] font-medium truncate w-full justify-start", s.bg, s.text, s.border)}>
       {event.isOnline
-        ? <Wifi className="w-2.5 h-2.5 flex-shrink-0" />
-        : <WifiOff className="w-2.5 h-2.5 flex-shrink-0" />}
+        ? <Wifi className="w-2.5 h-2.5 shrink-0" />
+        : <WifiOff className="w-2.5 h-2.5 shrink-0" />}
       <span className="truncate">{event.patient.split(" ")[0]}</span>
-      {event.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current ml-auto" />}
+      {event.isSubscribed && <Star className="w-2 h-2 shrink-0 fill-current ml-auto" />}
     </Badge>
   );
 }
@@ -290,10 +290,10 @@ function WeeklyView({
                           <>
                             <div className="flex items-center gap-1">
                               {e.isOnline
-                                ? <Wifi className="w-2.5 h-2.5 flex-shrink-0" />
-                                : <WifiOff className="w-2.5 h-2.5 flex-shrink-0" />}
+                                ? <Wifi className="w-2.5 h-2.5 shrink-0" />
+                                : <WifiOff className="w-2.5 h-2.5 shrink-0" />}
                               <span className="truncate font-semibold">{e.patient.split(" ")[0]}</span>
-                              {e.isSubscribed && <Star className="w-2.5 h-2.5 flex-shrink-0 fill-current ml-auto" />}
+                              {e.isSubscribed && <Star className="w-2.5 h-2.5 shrink-0 fill-current ml-auto" />}
                             </div>
                             {height > 36 && (
                               <div className="flex items-center gap-1 mt-0.5 opacity-70">
@@ -466,7 +466,7 @@ function MonthlyView({
               key={day}
               onClick={() => onSelectDay(day)}
               className={cn(
-                "min-h-[100px] rounded-xl p-2 cursor-pointer border-2 transition-all",
+                "min-h-25 rounded-xl p-2 cursor-pointer border-2 transition-all",
                 active
                   ? "border-teal-400 bg-teal-50 shadow-sm"
                   : isToday
@@ -566,7 +566,7 @@ export default function CalendarPage() {
     <div className="flex-1 overflow-hidden flex flex-col bg-gray-50">
 
       {/* ── Page header: title + edit button ── */}
-      <div className="px-6 pt-5 pb-1 bg-white flex items-center justify-between flex-shrink-0">
+      <div className="px-6 pt-5 pb-1 bg-white flex items-center justify-between shrink-0">
         <h1 className="text-2xl font-bold text-teal-600">Your Calendar</h1>
         <Button
           variant="ghost"
@@ -578,7 +578,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── Month label + range ── */}
-      <div className="px-6 pt-1 pb-3 bg-white flex items-center justify-between gap-4 flex-shrink-0">
+      <div className="px-6 pt-1 pb-3 bg-white flex items-center justify-between gap-4 shrink-0">
         <h2 className="text-2xl font-bold text-gray-800">{`${MONTHS[viewMonth]} ${viewYear}`}</h2>
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-400">({rangeLabel})</span>
@@ -594,7 +594,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── Full-width teal navigation bar ── */}
-      <div className="flex-shrink-0 bg-teal-400 flex items-center px-3 py-2 gap-2">
+      <div className="shrink-0 bg-teal-400 flex items-center px-3 py-2 gap-2">
         <Button
           variant="ghost"
           size="icon"
@@ -629,7 +629,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── Legend + Filters row ── */}
-      <div className="px-5 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-3">
+      <div className="px-5 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 flex-wrap gap-3">
         {/* Location legend with colored square swatches */}
         <div className="flex items-center gap-3 flex-wrap">
           <span className="text-xs font-semibold text-gray-500">Location</span>
