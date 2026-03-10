@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { Share2, TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
 import PatientsChart from "@/components/dashboard/PatientsChart";
 import AppointmentsPanel from "@/components/dashboard/AppointmentsPanel";
-import RealTimeClock from "@/components/RealTimeClock";
 import { DateSelector } from "@/components/DateSelector";
+import { InviteDialog } from "@/components/InviteDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -141,6 +142,8 @@ function StatCard({ stat }: { stat: (typeof stats)[0] }) {
 }
 
 export default function DashboardPage() {
+  const [inviteOpen, setInviteOpen] = useState(false);
+
   return (
     <div className="flex flex-1 flex-col overflow-hidden bg-gray-50">
       {/* Top header */}
@@ -152,16 +155,18 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-teal-700">Hi! Dr. Ritika Sahu</h1>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 border border-gray-200 shadow-sm">
-            <RealTimeClock />
-          </div>
           <DateSelector />
-          <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm">
+          <Button 
+            onClick={() => setInviteOpen(true)}
+            className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm"
+          >
             <Share2 className="w-4 h-4" />
             Invite
           </Button>
         </div>
       </header>
+
+      <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />
 
       {/* Main content + appointments panel */}
       <div className="flex flex-1 overflow-hidden">

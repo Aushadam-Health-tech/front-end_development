@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DateSelector } from "@/components/DateSelector";
+import { InviteDialog } from "@/components/InviteDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +44,7 @@ const updates = [
 
 export default function HomePage() {
   const [selectedStatus, setSelectedStatus] = useState("Scheduled");
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden bg-gray-50">
@@ -56,12 +58,17 @@ export default function HomePage() {
         </div>
         <div className="flex items-center gap-3">
           <DateSelector />
-          <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm">
+          <Button 
+            onClick={() => setInviteOpen(true)}
+            className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm"
+          >
             <Share2 className="w-4 h-4" />
             Invite
           </Button>
         </div>
       </header>
+
+      <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Main Content - Appointments Table */}
