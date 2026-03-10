@@ -4,14 +4,20 @@ import { useState, useMemo } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Edit2,
-  Monitor,
-  UserCheck,
   Star,
   Clock,
+  CalendarDays,
+  Plus,
+  Wifi,
+  WifiOff,
+  Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -100,16 +106,15 @@ const MONTHS = [
 ];
 const DAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-const LOCATION_STYLE: Record<Location, { bg: string; dot: string; text: string }> = {
-  "Clinic A": { bg: "bg-blue-100",   dot: "bg-blue-300",   text: "text-blue-800"   },
-  "Clinic B": { bg: "bg-teal-100",   dot: "bg-teal-400",   text: "text-teal-800"   },
-  "Clinic C": { bg: "bg-yellow-100", dot: "bg-yellow-400", text: "text-yellow-800" },
-  "Leave":    { bg: "bg-gray-200",   dot: "bg-gray-400",   text: "text-gray-600"   },
+const LOCATION_STYLE: Record<Location, { bg: string; dot: string; text: string; border: string; accent: string; swatch: string }> = {
+  "Clinic A": { bg: "bg-blue-50",   dot: "bg-blue-400",   text: "text-blue-800",   border: "border-blue-200",   accent: "#3b82f6", swatch: "bg-blue-200"   },
+  "Clinic B": { bg: "bg-teal-50",   dot: "bg-teal-400",   text: "text-teal-800",   border: "border-teal-200",   accent: "#0d9488", swatch: "bg-teal-300"   },
+  "Clinic C": { bg: "bg-amber-50",  dot: "bg-amber-400",  text: "text-amber-800",  border: "border-amber-200",  accent: "#d97706", swatch: "bg-amber-300"  },
+  "Leave":    { bg: "bg-gray-100",  dot: "bg-gray-400",   text: "text-gray-600",   border: "border-gray-200",   accent: "#9ca3af", swatch: "bg-gray-300"   },
 };
 
-// Hours shown in weekly/daily grid (9 AM – 5 PM)
 const GRID_HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // [9,10,...,17]
-const SLOT_HEIGHT = 56; // px per hour row
+const SLOT_HEIGHT = 72; // px per hour row — taller = more readable
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -163,30 +168,24 @@ function eventsForDate(date: string, filters: Set<PatientFilter>, events: CalEve
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function EventChip({ event, compact = false }: { event: CalEvent; compact?: boolean }) {
+function EventChip({ event }: { event: CalEvent }) {
   const s = LOCATION_STYLE[event.location];
   if (event.location === "Leave") {
     return (
-      <div className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${s.bg} ${s.text} flex items-center gap-1`}>
-        <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
+      <Badge variant="outline" className="rounded-md px-2 py-0.5 text-[10px] font-semibold bg-gray-100 text-gray-500 border-gray-200 gap-1 truncate w-full justify-start">
+        <span className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0" />
         Leave
-      </div>
+      </Badge>
     );
   }
   return (
-    <div
-      className={cn(
-        "rounded px-1.5 py-0.5 flex items-center gap-1 text-[10px] font-medium",
-        s.bg,
-        s.text,
-      )}
-    >
+    <Badge variant="outline" className={cn("rounded-md px-2 py-0.5 gap-1 text-[10px] font-medium truncate w-full justify-start", s.bg, s.text, s.border)}>
       {event.isOnline
-        ? <Monitor className="w-2.5 h-2.5 flex-shrink-0" />
-        : <UserCheck className="w-2.5 h-2.5 flex-shrink-0" />}
-      {!compact && <span className="truncate">{event.startTime}</span>}
-      {event.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current" />}
-    </div>
+        ? <Wifi className="w-2.5 h-2.5 flex-shrink-0" />
+        : <WifiOff className="w-2.5 h-2.5 flex-shrink-0" />}
+      <span className="truncate">{event.patient.split(" ")[0]}</span>
+      {event.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current ml-auto" />}
+    </Badge>
   );
 }
 
@@ -205,19 +204,27 @@ function WeeklyView({
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
-      {/* Header row */}
-      <div className="grid border-b border-gray-100 bg-white" style={{ gridTemplateColumns: "56px repeat(7, 1fr)" }}>
+      {/* Day header row */}
+      <div className="grid border-b border-gray-100 bg-gray-50/60" style={{ gridTemplateColumns: "64px repeat(7, 1fr)" }}>
         <div className="border-r border-gray-100" />
         {weekDays.map((d) => {
           const isToday = isoDate(d) === isoDate(today);
           return (
-            <div key={isoDate(d)} className="py-2 text-center border-r border-gray-100 last:border-r-0">
-              <p className="text-[11px] text-gray-400 font-medium">{DAYS_SHORT[d.getDay()]}</p>
-              <p className={cn(
-                "text-sm font-bold mx-auto w-7 h-7 flex items-center justify-center rounded-full",
-                isToday ? "bg-teal-500 text-white" : "text-gray-700"
+            <div
+              key={isoDate(d)}
+              className={cn(
+                "py-2.5 text-center border-r border-gray-100 last:border-r-0",
+                isToday && "bg-teal-50/40"
+              )}
+            >
+              <div className={cn(
+                "text-base font-bold mx-auto w-8 h-8 flex items-center justify-center rounded-full",
+                isToday ? "bg-teal-500 text-white shadow-sm" : "text-gray-800"
               )}>
-                {d.getDate()}
+                {String(d.getDate()).padStart(2, "0")}
+              </div>
+              <p className={cn("text-[11px] font-medium mt-0.5 uppercase tracking-wide", isToday ? "text-teal-500" : "text-gray-400")}>
+                {DAYS_SHORT[d.getDay()]}
               </p>
             </div>
           );
@@ -225,67 +232,72 @@ function WeeklyView({
       </div>
 
       {/* Time grid */}
-      <div className="flex-1 overflow-y-auto">
+      <ScrollArea className="flex-1">
         <div className="relative" style={{ minHeight: GRID_HOURS.length * SLOT_HEIGHT }}>
-          {/* Hour lines */}
+          {/* Hour lines + time labels */}
           {GRID_HOURS.map((h, idx) => (
             <div
               key={h}
               className="absolute left-0 right-0 border-t border-gray-100 flex"
               style={{ top: idx * SLOT_HEIGHT, height: SLOT_HEIGHT }}
             >
-              <div className="w-14 shrink-0 px-2 pt-1 text-[10px] text-gray-400 font-medium">
-                {h === 12 ? "12 PM" : h > 12 ? `${h - 12} PM` : `${h} AM`}
+              <div className="w-16 shrink-0 px-3 pt-1.5 text-[11px] text-gray-400 font-medium select-none">
+                {String(h).padStart(2, "0")}
               </div>
-              {weekDays.map((d) => (
-                <div key={isoDate(d)} className="flex-1 border-l border-gray-100 last:border-r-0" />
-              ))}
+              {weekDays.map((d) => {
+                const isToday = isoDate(d) === isoDate(today);
+                return (
+                  <div key={isoDate(d)} className={cn(
+                    "flex-1 border-l border-gray-100",
+                    isToday && "bg-teal-50/20"
+                  )} />
+                );
+              })}
             </div>
           ))}
 
           {/* Events overlay */}
           <div
             className="absolute inset-0 grid pointer-events-none"
-            style={{ gridTemplateColumns: "56px repeat(7, 1fr)" }}
+            style={{ gridTemplateColumns: "64px repeat(7, 1fr)" }}
           >
             <div />
             {weekDays.map((d) => {
               const dateStr = isoDate(d);
               const dayEvents = eventsForDate(dateStr, activeFilters, EVENTS);
               return (
-                <div key={dateStr} className="relative pointer-events-auto px-0.5">
+                <div key={dateStr} className="relative pointer-events-auto px-1">
                   {dayEvents.map((e) => {
                     const startMin = timeToMinutes(e.startTime);
                     const endMin = timeToMinutes(e.endTime);
                     const gridStart = 9 * 60;
                     const top = ((startMin - gridStart) / 60) * SLOT_HEIGHT;
-                    const height = Math.max(((endMin - startMin) / 60) * SLOT_HEIGHT - 2, 20);
+                    const height = Math.max(((endMin - startMin) / 60) * SLOT_HEIGHT - 3, 22);
                     const s = LOCATION_STYLE[e.location];
                     return (
                       <div
                         key={e.id}
                         className={cn(
-                          "absolute left-0.5 right-0.5 rounded-md px-1.5 py-1 text-[10px] font-medium overflow-hidden border-l-2 cursor-pointer hover:brightness-95 transition-all",
+                          "absolute left-1 right-1 rounded-md px-2 py-1 text-[11px] font-medium overflow-hidden cursor-pointer hover:brightness-95 hover:shadow-sm transition-all",
                           s.bg,
                           s.text,
-                          `border-l-[3px]`,
                         )}
-                        style={{ top, height, borderLeftColor: s.dot.replace("bg-", "") }}
+                        style={{ top, height }}
                       >
                         {e.location === "Leave" ? (
-                          <span className="font-semibold">Leave</span>
+                          <span className="font-semibold text-gray-500">Leave</span>
                         ) : (
                           <>
                             <div className="flex items-center gap-1">
                               {e.isOnline
-                                ? <Monitor className="w-2.5 h-2.5 flex-shrink-0" />
-                                : <UserCheck className="w-2.5 h-2.5 flex-shrink-0" />}
-                              <span className="truncate">{e.patient.split(" ")[0]}</span>
-                              {e.isSubscribed && <Star className="w-2 h-2 flex-shrink-0 fill-current ml-auto" />}
+                                ? <Wifi className="w-2.5 h-2.5 flex-shrink-0" />
+                                : <WifiOff className="w-2.5 h-2.5 flex-shrink-0" />}
+                              <span className="truncate font-semibold">{e.patient.split(" ")[0]}</span>
+                              {e.isSubscribed && <Star className="w-2.5 h-2.5 flex-shrink-0 fill-current ml-auto" />}
                             </div>
-                            {height > 32 && (
-                              <div className="flex items-center gap-0.5 mt-0.5 opacity-70">
-                                <Clock className="w-2 h-2" />
+                            {height > 36 && (
+                              <div className="flex items-center gap-1 mt-0.5 opacity-70">
+                                <Clock className="w-2.5 h-2.5" />
                                 <span>{e.startTime}–{e.endTime}</span>
                               </div>
                             )}
@@ -299,7 +311,7 @@ function WeeklyView({
             })}
           </div>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }
@@ -309,77 +321,96 @@ function WeeklyView({
 function DailyView({
   date,
   activeFilters,
+  today,
 }: {
   date: Date;
   activeFilters: Set<PatientFilter>;
+  today: Date;
 }) {
   const dateStr = isoDate(date);
   const dayEvents = eventsForDate(dateStr, activeFilters, EVENTS);
+  const isToday = dateStr === isoDate(today);
 
   return (
     <div className="flex flex-1 overflow-hidden">
       {/* Time axis */}
-      <div className="w-14 shrink-0 border-r border-gray-100 bg-white" style={{ minHeight: GRID_HOURS.length * SLOT_HEIGHT }}>
-        {GRID_HOURS.map((h, idx) => (
-          <div key={h} className="flex items-start px-2 pt-1" style={{ height: SLOT_HEIGHT }}>
-            <span className="text-[10px] text-gray-400 font-medium">
-              {h === 12 ? "12 PM" : h > 12 ? `${h - 12} PM` : `${h} AM`}
+      <div className="w-16 shrink-0 border-r border-gray-100 bg-gray-50/60 select-none">
+        {GRID_HOURS.map((h) => (
+          <div key={h} className="flex items-start px-3 pt-2" style={{ height: SLOT_HEIGHT }}>
+            <span className="text-[11px] text-gray-400 font-medium">
+              {String(h).padStart(2, "0")}
             </span>
           </div>
         ))}
       </div>
 
       {/* Events column */}
-      <div className="flex-1 overflow-y-auto relative" style={{ minHeight: GRID_HOURS.length * SLOT_HEIGHT }}>
-        {GRID_HOURS.map((h, idx) => (
-          <div key={h} className="border-t border-gray-100" style={{ height: SLOT_HEIGHT }} />
-        ))}
-        {dayEvents.map((e) => {
-          const startMin = timeToMinutes(e.startTime);
-          const endMin = timeToMinutes(e.endTime);
-          const gridStart = 9 * 60;
-          const top = ((startMin - gridStart) / 60) * SLOT_HEIGHT;
-          const height = Math.max(((endMin - startMin) / 60) * SLOT_HEIGHT - 4, 24);
-          const s = LOCATION_STYLE[e.location];
-          return (
+      <ScrollArea className="flex-1">
+        <div className="relative" style={{ minHeight: GRID_HOURS.length * SLOT_HEIGHT }}>
+          {GRID_HOURS.map((h) => (
             <div
-              key={e.id}
-              className={cn(
-                "absolute left-2 right-4 rounded-xl px-3 py-2 shadow-sm border-l-4 cursor-pointer hover:shadow-md transition-all",
-                s.bg, s.text,
-              )}
-              style={{ top, height }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-sm truncate">
-                  {e.location === "Leave" ? "Leave" : e.patient}
-                </span>
-                {e.isSubscribed && <Star className="w-3 h-3 fill-current flex-shrink-0" />}
-              </div>
-              {height > 36 && e.location !== "Leave" && (
-                <div className="flex items-center gap-3 mt-1 text-xs opacity-80">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />{e.startTime}–{e.endTime}
+              key={h}
+              className={cn("border-t border-gray-100", isToday && "bg-teal-50/10")}
+              style={{ height: SLOT_HEIGHT }}
+            />
+          ))}
+          {dayEvents.map((e) => {
+            const startMin = timeToMinutes(e.startTime);
+            const endMin = timeToMinutes(e.endTime);
+            const gridStart = 9 * 60;
+            const top = ((startMin - gridStart) / 60) * SLOT_HEIGHT;
+            const height = Math.max(((endMin - startMin) / 60) * SLOT_HEIGHT - 6, 28);
+            const s = LOCATION_STYLE[e.location];
+            return (
+              <div
+                key={e.id}
+                className={cn(
+                  "absolute left-3 right-4 rounded-xl px-4 py-2.5 cursor-pointer hover:shadow-md transition-all border-l-4 shadow-sm",
+                  s.bg, s.text,
+                )}
+                style={{ top, height, borderLeftColor: s.accent }}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold text-sm truncate">
+                    {e.location === "Leave" ? "🏖 Leave" : e.patient}
                   </span>
-                  <span className="flex items-center gap-1">
-                    {e.isOnline
-                      ? <><Monitor className="w-3 h-3" />Online</>
-                      : <><UserCheck className="w-3 h-3" />In-Person</>}
-                  </span>
-                  <Badge className={cn("text-[10px] px-2 py-0 h-4 rounded-full", s.bg, s.text, "border border-current/20")}>
-                    {e.location}
-                  </Badge>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {e.isSubscribed && (
+                      <Badge className={cn("text-[10px] px-1.5 h-4 rounded-full gap-0.5", s.bg, s.text, "border-0")}>
+                        <Star className="w-2 h-2 fill-current" /> Pro
+                      </Badge>
+                    )}
+                    {e.location !== "Leave" && (
+                      <Badge className={cn("text-[10px] px-1.5 h-4 rounded-full", s.bg, s.text, "border border-current/20")}>
+                        {e.location}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-              )}
+                {height > 36 && e.location !== "Leave" && (
+                  <div className="flex items-center gap-3 mt-1 text-xs opacity-75">
+                    <span className="flex items-center gap-1 font-medium">
+                      <Clock className="w-3 h-3" />
+                      {e.startTime} – {e.endTime}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      {e.isOnline
+                        ? <><Wifi className="w-3 h-3" /> Online</>
+                        : <><WifiOff className="w-3 h-3" /> In-Person</>}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          {dayEvents.length === 0 && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-400">
+              <CalendarDays className="w-8 h-8 opacity-30" />
+              <p className="text-sm font-medium">No appointments scheduled</p>
             </div>
-          );
-        })}
-        {dayEvents.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
-            No appointments
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </ScrollArea>
     </div>
   );
 }
@@ -406,12 +437,21 @@ function MonthlyView({
 
   return (
     <div className="flex-1 overflow-y-auto p-4">
-      <div className="grid grid-cols-7 mb-1">
-        {DAYS_SHORT.map((d) => (
-          <div key={d} className="text-center text-[11px] font-semibold text-gray-400 py-1.5">{d}</div>
+      {/* Day headers */}
+      <div className="grid grid-cols-7 mb-2">
+        {DAYS_SHORT.map((d, i) => (
+          <div
+            key={d}
+            className={cn(
+              "text-center text-[11px] font-bold uppercase tracking-wider py-2",
+              i === 0 || i === 6 ? "text-gray-300" : "text-gray-400"
+            )}
+          >
+            {d}
+          </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-1.5">
         {Array.from({ length: firstDay }).map((_, i) => <div key={`b-${i}`} />)}
         {Array.from({ length: totalDays }).map((_, i) => {
           const day = i + 1;
@@ -419,30 +459,43 @@ function MonthlyView({
           const dayEvents = eventsForDate(dateStr, activeFilters, EVENTS);
           const active = selectedDay === day;
           const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+          const isWeekend = (new Date(year, month, day).getDay() === 0 || new Date(year, month, day).getDay() === 6);
 
           return (
             <div
               key={day}
               onClick={() => onSelectDay(day)}
               className={cn(
-                "min-h-[90px] rounded-xl p-2 cursor-pointer border transition-all",
+                "min-h-[100px] rounded-xl p-2 cursor-pointer border-2 transition-all",
                 active
-                  ? "border-teal-500 bg-teal-50 shadow-sm"
-                  : "border-gray-100 bg-white hover:border-teal-200 hover:bg-teal-50/30",
+                  ? "border-teal-400 bg-teal-50 shadow-sm"
+                  : isToday
+                  ? "border-teal-200 bg-teal-50/40 hover:border-teal-300"
+                  : isWeekend
+                  ? "border-transparent bg-gray-50/60 hover:border-gray-200 hover:bg-gray-50"
+                  : "border-transparent bg-white hover:border-gray-200 hover:bg-gray-50/60",
               )}
             >
               <div className={cn(
-                "text-sm font-semibold w-6 h-6 flex items-center justify-center rounded-full mb-1",
-                isToday ? "bg-teal-500 text-white" : active ? "text-teal-700" : "text-gray-700",
+                "text-sm font-bold w-7 h-7 flex items-center justify-center rounded-full mb-1.5",
+                isToday
+                  ? "bg-teal-500 text-white shadow-sm"
+                  : active
+                  ? "text-teal-700"
+                  : isWeekend
+                  ? "text-gray-400"
+                  : "text-gray-700",
               )}>
                 {day}
               </div>
               <div className="space-y-0.5">
-                {dayEvents.slice(0, 3).map((e) => (
-                  <EventChip key={e.id} event={e} compact />
+                {dayEvents.slice(0, 2).map((e) => (
+                  <EventChip key={e.id} event={e} />
                 ))}
-                {dayEvents.length > 3 && (
-                  <p className="text-[10px] text-gray-400 pl-1">+{dayEvents.length - 3} more</p>
+                {dayEvents.length > 2 && (
+                  <div className="text-[10px] text-gray-400 font-medium pl-1 pt-0.5">
+                    +{dayEvents.length - 2} more
+                  </div>
                 )}
               </div>
             </div>
@@ -509,106 +562,122 @@ export default function CalendarPage() {
     return `${String(currentDate.getDate()).padStart(2, "0")} ${MONTHS[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
   }, [view, currentDate, weekStart, weekEnd, viewMonth, viewYear]);
 
-  // Month header label for weekly/daily
-  const monthLabel = useMemo(() => {
-    if (view === "Monthly") return `${MONTHS[viewMonth]} ${viewYear}`;
-    return `${MONTHS[weekStart.getMonth()]} ${weekStart.getFullYear()}`;
-  }, [view, viewMonth, viewYear, weekStart]);
-
   return (
-    <div className="flex-1 overflow-hidden bg-gray-50 flex flex-col">
-      {/* ── Page header ── */}
-      <header className="px-6 py-4 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800">Your Calendar</h1>
-        </div>
-        <button className="text-sm font-medium text-gray-600 hover:text-teal-600 flex items-center gap-1 transition-colors">
+    <div className="flex-1 overflow-hidden flex flex-col bg-gray-50">
+
+      {/* ── Page header: title + edit button ── */}
+      <div className="px-6 pt-5 pb-1 bg-white flex items-center justify-between flex-shrink-0">
+        <h1 className="text-2xl font-bold text-teal-600">Your Calendar</h1>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gray-500 hover:text-teal-600 gap-1 text-sm font-medium"
+        >
           Edit Availability <ChevronRight className="w-4 h-4" />
-        </button>
-      </header>
-
-      {/* ── Toolbar ── */}
-      <div className="px-6 py-3 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-3">
-        {/* Month + nav */}
-        <div className="flex items-center gap-3">
-          <h2 className="text-lg font-bold text-gray-800 w-48">{monthLabel}</h2>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="w-7 h-7 rounded-lg hover:bg-gray-100">
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => navigate(1)} className="w-7 h-7 rounded-lg hover:bg-gray-100">
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-          <span className="text-xs text-gray-400 font-medium">({rangeLabel})</span>
-        </div>
-
-        {/* View toggle */}
-        <div className="flex bg-teal-500 rounded-full p-1 gap-0.5">
-          {(["Daily", "Weekly", "Monthly"] as ViewMode[]).map((v) => (
-            <button
-              key={v}
-              onClick={() => setView(v)}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-semibold transition-all",
-                view === v ? "bg-white text-teal-700 shadow-sm" : "text-white hover:bg-teal-400",
-              )}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
-
-        {/* Today button */}
-        <Button variant="outline" size="sm" onClick={goToday} className="rounded-lg text-teal-600 border-teal-200 hover:bg-teal-50 text-xs h-7">
-          Today
         </Button>
       </div>
 
-      {/* ── Legend + Filters ── */}
-      <div className="px-6 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
-        {/* Location legend */}
-        <div className="flex items-center gap-4">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Location</span>
+      {/* ── Month label + range ── */}
+      <div className="px-6 pt-1 pb-3 bg-white flex items-center justify-between gap-4 flex-shrink-0">
+        <h2 className="text-2xl font-bold text-gray-800">{`${MONTHS[viewMonth]} ${viewYear}`}</h2>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-400">({rangeLabel})</span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goToday}
+            className="rounded-lg text-teal-600 border-teal-200 hover:bg-teal-50 text-xs font-semibold h-7 px-3"
+          >
+            Today
+          </Button>
+        </div>
+      </div>
+
+      {/* ── Full-width teal navigation bar ── */}
+      <div className="flex-shrink-0 bg-teal-400 flex items-center px-3 py-2 gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate(-1)}
+          className="text-white hover:bg-white/20 w-9 h-9 rounded-full shrink-0"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </Button>
+        <div className="flex-1 flex justify-center">
+          <Tabs value={view} onValueChange={(v) => setView(v as ViewMode)}>
+            <TabsList className="bg-transparent gap-1 p-1 h-auto border-0 shadow-none">
+              {(["Daily", "Weekly", "Monthly"] as ViewMode[]).map((v) => (
+                <TabsTrigger
+                  key={v}
+                  value={v}
+                  className="px-6 py-1.5 rounded-full text-sm font-semibold text-white/80 data-[state=active]:bg-white data-[state=active]:text-teal-700 data-[state=active]:shadow-sm hover:text-white transition-all"
+                >
+                  {v}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate(1)}
+          className="text-white hover:bg-white/20 w-9 h-9 rounded-full shrink-0"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </Button>
+      </div>
+
+      {/* ── Legend + Filters row ── */}
+      <div className="px-5 py-2.5 bg-white border-b border-gray-100 flex items-center justify-between flex-shrink-0 flex-wrap gap-3">
+        {/* Location legend with colored square swatches */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-xs font-semibold text-gray-500">Location</span>
           {(Object.entries(LOCATION_STYLE) as [Location, typeof LOCATION_STYLE[Location]][]).map(([loc, s]) => (
-            <span key={loc} className="flex items-center gap-1.5 text-xs text-gray-600">
-              <span className={cn("w-3 h-3 rounded-sm", s.bg, "border border-gray-200")} />
+            <div key={loc} className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+              <span className={cn("w-3.5 h-3.5 rounded-sm shrink-0", s.swatch)} />
               {loc}
-            </span>
+            </div>
           ))}
-          <button className="text-gray-400 hover:text-gray-600 ml-1">
-            <Edit2 className="w-3 h-3" />
-          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-5 h-5 text-gray-400 hover:text-teal-600 p-0 shrink-0"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </Button>
         </div>
 
-        {/* Patient type filters */}
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Patients</span>
+        {/* Patient type filter buttons */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-semibold text-gray-500">Patients</span>
           {(["Online", "Offline", "Subscribed"] as PatientFilter[]).map((f) => {
             const active = activeFilters.has(f);
             return (
-              <button
+              <Button
                 key={f}
+                variant="outline"
+                size="sm"
                 onClick={() => toggleFilter(f)}
                 className={cn(
-                  "flex items-center gap-1.5 text-xs px-2 py-1 rounded-md border transition-all",
+                  "h-7 gap-1.5 text-xs border rounded-md transition-all px-2.5",
                   active
-                    ? "bg-teal-50 border-teal-300 text-teal-700 font-semibold"
-                    : "border-gray-200 text-gray-500 hover:border-gray-300",
+                    ? "bg-teal-50 border-teal-400 text-teal-700 font-semibold"
+                    : "border-gray-300 text-gray-500 bg-white hover:border-teal-300 hover:text-teal-600",
                 )}
               >
-                {f === "Online" && <Monitor className="w-3 h-3" />}
-                {f === "Offline" && <UserCheck className="w-3 h-3" />}
+                {f === "Online" && <Wifi className="w-3 h-3" />}
+                {f === "Offline" && <WifiOff className="w-3 h-3" />}
                 {f === "Subscribed" && <Star className="w-3 h-3" />}
                 {f}
-              </button>
+              </Button>
             );
           })}
         </div>
       </div>
 
-      {/* ── Calendar body ── */}
-      <div className="flex-1 overflow-hidden flex flex-col bg-white mx-4 my-3 rounded-2xl border border-gray-100 shadow-sm">
+      {/* ── Calendar grid ── */}
+      <Card className="flex-1 overflow-hidden flex flex-col mx-4 my-3 rounded-xl border border-gray-200 shadow-sm">
         {view === "Monthly" && (
           <MonthlyView
             year={viewYear}
@@ -630,9 +699,10 @@ export default function CalendarPage() {
           <DailyView
             date={currentDate}
             activeFilters={activeFilters}
+            today={today}
           />
         )}
-      </div>
+      </Card>
     </div>
   );
 }
