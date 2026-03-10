@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { DateSelector } from "@/components/DateSelector";
 
 const appointments = [
   { id: 1, time: "08:00 AM", patient: "Dasha Shah",       purpose: "General Checkup",    type: "In-Person", status: "Completed",  duration: "30 min", initials: "DS", color: "bg-blue-100 text-blue-700" },
@@ -54,10 +55,13 @@ export default function AppointmentsPage() {
             {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
           </p>
         </div>
-        <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl">
-          <Plus className="w-4 h-4" />
-          New Appointment
-        </Button>
+        <div className="flex items-center gap-3">
+          <DateSelector />
+          <Button className="bg-teal-600 hover:bg-teal-700 text-white gap-2 rounded-xl">
+            <Plus className="w-4 h-4" />
+            New Appointment
+          </Button>
+        </div>
       </header>
 
       <div className="px-6 py-5 space-y-4">
@@ -140,11 +144,11 @@ export default function AppointmentsPage() {
                 {/* Patient */}
                 <div className="flex items-center gap-3 min-w-0">
                   {a.status !== "Break" ? (
-                    <Avatar className="w-8 h-8 flex-shrink-0">
+                    <Avatar className="w-8 h-8 shrink-0">
                       <AvatarFallback className={`text-xs font-semibold ${a.color}`}>{a.initials}</AvatarFallback>
                     </Avatar>
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                       <span className="text-gray-400 text-xs">—</span>
                     </div>
                   )}

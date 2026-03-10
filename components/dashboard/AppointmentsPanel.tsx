@@ -56,7 +56,7 @@ export default function AppointmentsPanel() {
   };
 
   return (
-    <div className="w-80 flex-shrink-0 bg-white border-l border-gray-100 flex flex-col h-screen overflow-hidden">
+    <div className="w-80 shrink-0 bg-white border-l border-gray-100 flex flex-col h-screen overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4">
         <h2 className="font-bold text-gray-800 text-base">Today's Appointments</h2>
         <Button variant="link" className="text-teal-600 text-sm p-0 h-auto font-medium">View All</Button>
@@ -75,7 +75,7 @@ export default function AppointmentsPanel() {
             >
               <span
                 className={cn(
-                  "text-xs font-medium w-16 flex-shrink-0 mt-0.5",
+                  "text-xs font-medium w-16 shrink-0 mt-0.5",
                   appt.status === "current" ? "text-teal-600 font-bold" : "",
                   appt.status === "overdue" ? "text-red-500 font-bold" : "",
                   appt.status === "break" ? "text-purple-500 font-bold" : "",
@@ -89,7 +89,7 @@ export default function AppointmentsPanel() {
               <div className="flex flex-col items-center mt-1">
                 <div
                   className={cn(
-                    "w-2.5 h-2.5 rounded-full flex-shrink-0",
+                    "w-2.5 h-2.5 rounded-full shrink-0",
                     appt.status === "current" ? "bg-teal-500" : "",
                     appt.status === "upcoming" ? "bg-gray-800" : "",
                     appt.status === "past" ? "bg-gray-200" : "",
@@ -118,7 +118,7 @@ export default function AppointmentsPanel() {
               {appt.status === "current" && (
                 <ChevronDown
                   className={cn(
-                    "w-4 h-4 text-gray-400 transition-transform flex-shrink-0 mt-0.5",
+                    "w-4 h-4 text-gray-400 transition-transform shrink-0 mt-0.5",
                     expandedIdx === idx ? "rotate-180" : ""
                   )}
                 />
@@ -127,7 +127,7 @@ export default function AppointmentsPanel() {
 
             {/* Expanded detail */}
             {expandedIdx === idx && appt.patient && (
-              <div className="ml-[76px] mb-3 bg-gray-50 rounded-xl p-4 border border-gray-100">
+              <div className="ml-19 mb-3 bg-gray-50 rounded-xl p-4 border border-gray-100">
                 <div className="space-y-2 text-sm">
                   {[
                     { label: "Patient", value: appt.patient },
@@ -136,7 +136,7 @@ export default function AppointmentsPanel() {
                     { label: "Status", value: appt.apptStatus },
                   ].map(({ label, value }) => (
                     <div key={label} className="flex gap-4">
-                      <span className="text-gray-400 w-16 flex-shrink-0">{label}</span>
+                      <span className="text-gray-400 w-16 shrink-0">{label}</span>
                       <span className="text-gray-700 font-medium">{value}</span>
                     </div>
                   ))}
