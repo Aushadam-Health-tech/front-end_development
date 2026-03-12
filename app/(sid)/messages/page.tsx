@@ -8,9 +8,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Message {
   id: number;
@@ -157,13 +161,16 @@ export default function MessagesPage() {
   const [search, setSearch] = useState("");
   const [input, setInput] = useState("");
   const [showPatientDetails, setShowPatientDetails] = useState(false);
+  const [convoFilter, setConvoFilter] = useState<"all" | "unread">("all");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const active = convos.find(c => c.id === activeId)!;
 
-  const filteredConvos = convos.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredConvos = convos.filter(c => {
+    const matchSearch = c.name.toLowerCase().includes(search.toLowerCase());
+    const matchFilter = convoFilter === "all" || c.unread > 0;
+    return matchSearch && matchFilter;
+  });
 
   const openConvo = (id: number) => {
     setActiveId(id);
@@ -209,7 +216,20 @@ export default function MessagesPage() {
             />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto">
+
+        {/* All / Unread filter */}
+        <div className="px-4 pt-3 pb-1 shrink-0">
+          <Tabs value={convoFilter} onValueChange={(v) => setConvoFilter(v as "all" | "unread")}>
+            <TabsList className="w-full grid grid-cols-2 h-8 rounded-lg bg-gray-100">
+              <TabsTrigger value="all" className="text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-teal-700 data-[state=active]:shadow-sm">All</TabsTrigger>
+              <TabsTrigger value="unread" className="text-xs rounded-md data-[state=active]:bg-white data-[state=active]:text-teal-700 data-[state=active]:shadow-sm">
+                Unread {convos.filter(c => c.unread > 0).length > 0 && `(${convos.filter(c => c.unread > 0).length})`}
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+
+        <ScrollArea className="flex-1">
           <div className="py-2">
             {filteredConvos.map(c => (
               <button
@@ -242,7 +262,7 @@ export default function MessagesPage() {
               </button>
             ))}
           </div>
-        </div>
+        </ScrollArea>
       </div>
 
       {/* Chat window */}
@@ -267,9 +287,24 @@ export default function MessagesPage() {
             </div>
           </button>
           <div className="flex items-center gap-1 shrink-0">
-            <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><Phone className="w-4 h-4 text-gray-500" /></Button>
-            <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><Video className="w-4 h-4 text-gray-500" /></Button>
-            <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><MoreVertical className="w-4 h-4 text-gray-500" /></Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><Phone className="w-4 h-4 text-gray-500" /></Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Voice call</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><Video className="w-4 h-4 text-gray-500" /></Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Video call</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100"><MoreVertical className="w-4 h-4 text-gray-500" /></Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">More options</TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
@@ -314,17 +349,19 @@ export default function MessagesPage() {
         <Separator />
 
         {/* Input bar */}
-        <div className="bg-white px-5 py-3 flex items-center gap-3 shrink-0">
-          <Input
+        <div className="bg-white px-5 py-3 flex items-end gap-3 shrink-0">
+          <Textarea
             placeholder={`Message ${active.name}...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
                 sendMessage();
               }
             }}
-            className="flex-1 rounded-xl border-gray-200"
+            rows={1}
+            className="flex-1 rounded-xl border-gray-200 resize-none min-h-10 max-h-32"
           />
           <Button
             onClick={sendMessage}
