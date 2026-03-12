@@ -15,12 +15,15 @@ import {
   LogOut,
   Menu,
   ChevronDown,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 /**
  * AushodamLogo
@@ -111,41 +114,42 @@ export default function Sidebar() {
   const close = () => setExpanded(false);
   const toggle = (e: React.MouseEvent) => { e.stopPropagation(); setExpanded(v => !v); };
 
-  // Prevent clicks on nav icons from bubbling up and triggering open()
-  const stopBubble = (e: React.MouseEvent) => e.stopPropagation();
+  // Close sidebar and stop click from bubbling up to the aside's open() handler
+  const handleNavClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpanded(false);
+  };
 
   return (
     <>
-      {/* Dim backdrop — only when expanded */}
-      {expanded && (
-        <div
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[1px] transition-opacity duration-300"
-          onClick={close}
-          aria-hidden="true"
-        />
-      )}
+      {/* Dim backdrop — fades in/out smoothly */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-black/30 backdrop-blur-[1px] transition-all duration-300",
+          expanded ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={close}
+        aria-hidden="true"
+      />
 
       <aside
         onClick={!expanded ? open : undefined}
         className={cn(
           "fixed left-0 top-0 h-screen bg-white border-r border-gray-100 flex flex-col z-50 shadow-sm",
-          "transition-all duration-300 ease-in-out",
+          "transition-[width] duration-300 ease-in-out",
           expanded ? "w-60 cursor-default" : "w-16 cursor-pointer"
         )}
       >
         {/* Logo / Brand */}
-        <div className="flex items-center h-16 px-4 border-b border-gray-100">
-          {expanded ? (
-            <div className="flex items-center gap-2 overflow-hidden">
-              <AushodamLogo className="w-10 h-auto shrink-0" />
-              <div className="flex flex-col leading-tight">
-                <span className="text-teal-700 font-bold text-base tracking-widest">AUSHADHAM</span>
-                <span className="text-teal-600 text-[10px] tracking-wide">Hospital or clinic Name</span>
-              </div>
-            </div>
-          ) : (
-            <AushodamLogo className="w-9 h-auto mx-auto" />
-          )}
+        <div className="flex items-center h-16 px-4 border-b border-gray-100 overflow-hidden">
+          <AushodamLogo className={cn("shrink-0 transition-all duration-300", expanded ? "w-10" : "w-9 mx-auto")} />
+          <div className={cn(
+            "flex flex-col leading-tight ml-2 transition-all duration-300 overflow-hidden whitespace-nowrap",
+            expanded ? "opacity-100 max-w-[160px]" : "opacity-0 max-w-0"
+          )}>
+            <span className="text-teal-700 font-bold text-base tracking-widest">AUSHADHAM</span>
+            <span className="text-teal-600 text-[10px] tracking-wide">Hospital or clinic Name</span>
+          </div>
         </div>
 
         {/* Toggle button */}
@@ -158,27 +162,28 @@ export default function Sidebar() {
               className="w-full h-12 rounded-none text-gray-500 hover:text-teal-600 hover:bg-teal-100"
               aria-label="Toggle sidebar"
             >
-              <Menu className="w-5 h-5 transition-transform duration-200 hover:scale-110" />
+              <Menu className={cn(
+              "w-5 h-5 transition-transform duration-300",
+              expanded ? "rotate-90" : "rotate-0"
+            )} />
             </Button>
           </TooltipTrigger>
           {!expanded && <TooltipContent side="right">Toggle menu</TooltipContent>}
         </Tooltip>
 
-        {/* Search (only when expanded) */}
-        {expanded && (
-          <div className="px-3 pb-2">
-            <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search"
-                className="bg-transparent text-sm text-gray-600 placeholder-gray-400 outline-none w-full"
-              />
-            </div>
+        {/* Search — fades in when expanded */}
+        <div className={cn(
+          "px-3 pb-2 overflow-hidden transition-all duration-300",
+          expanded ? "opacity-100 max-h-16" : "opacity-0 max-h-0 pb-0"
+        )}>
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+            <Input
+              placeholder="Search"
+              className="pl-8 h-8 text-sm bg-gray-50 border-0 focus-visible:ring-1 focus-visible:ring-teal-300 rounded-lg"
+            />
           </div>
-        )}
+        </div>
 
         {/* Nav Items */}
         <nav className="flex-1 px-2 py-2 space-y-1 overflow-y-auto">
@@ -189,7 +194,7 @@ export default function Sidebar() {
               <TooltipTrigger asChild>
                 <Link
                   href={item.href}
-                  onClick={stopBubble}
+                  onClick={handleNavClick}
                   className={cn(
                     "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group",
                     isActive
@@ -203,12 +208,16 @@ export default function Sidebar() {
                       isActive ? "text-white" : "text-gray-400 group-hover:text-teal-600"
                     )}
                   />
-                  {expanded && (
-                    <span className="flex-1 whitespace-nowrap overflow-hidden">{item.label}</span>
-                  )}
-                  {expanded && item.hasChildren && (
-                    <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
-                  )}
+                  <span className={cn(
+                    "flex-1 whitespace-nowrap overflow-hidden transition-all duration-300",
+                    expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+                  )}>
+                    {item.label}
+                  </span>
+                  <ChevronDown className={cn(
+                    "w-4 h-4 text-gray-400 shrink-0 transition-all duration-300",
+                    item.hasChildren && expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0 overflow-hidden"
+                  )} />
                 </Link>
               </TooltipTrigger>
               {!expanded && (
@@ -222,39 +231,39 @@ export default function Sidebar() {
         </nav>
 
         {/* Bottom: User profile */}
-        <div className="border-t border-gray-100 p-3 space-y-1">
-          {expanded ? (
-            <div className="flex items-center gap-3 px-2 py-2 mb-1">
-              <Avatar className="w-9 h-9 shrink-0">
-                <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
-              </Avatar>
-              <div className="overflow-hidden">
-                <p className="text-sm font-medium text-gray-800 truncate">Dr. Ritika Shah</p>
-                <Badge className="text-[10px] bg-amber-400 hover:bg-amber-400 text-white px-1.5 py-0.5 rounded font-medium">Admin</Badge>
-              </div>
-            </div>
-          ) : (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex justify-center py-1 cursor-pointer">
-                  <Avatar className="w-9 h-9">
-                    <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
-                  </Avatar>
+        <div className="p-3 space-y-1">
+          <Separator className="mb-3" />
+          {/* Avatar row — always rendered, text fades */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-3 px-2 py-2 mb-1 overflow-hidden">
+                <Avatar className="w-9 h-9 shrink-0">
+                  <AvatarFallback className="bg-amber-400 text-white font-semibold text-sm">RS</AvatarFallback>
+                </Avatar>
+                <div className={cn(
+                  "overflow-hidden transition-all duration-300 whitespace-nowrap",
+                  expanded ? "opacity-100 max-w-[140px]" : "opacity-0 max-w-0"
+                )}>
+                  <p className="text-sm font-medium text-gray-800 truncate">Dr. Ritika Shah</p>
+                  <Badge className="text-[10px] bg-amber-400 hover:bg-amber-400 text-white px-1.5 py-0.5 rounded font-medium">Admin</Badge>
                 </div>
-              </TooltipTrigger>
-              <TooltipContent side="right">Dr. Ritika Shah</TooltipContent>
-            </Tooltip>
-          )}
+              </div>
+            </TooltipTrigger>
+            {!expanded && <TooltipContent side="right">Dr. Ritika Shah</TooltipContent>}
+          </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="/settings"
-                onClick={stopBubble}
+                onClick={handleNavClick}
                 className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group"
               >
                 <Settings className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
-                {expanded && <span>Settings</span>}
+                <span className={cn(
+                  "whitespace-nowrap overflow-hidden transition-all duration-300",
+                  expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+                )}>Settings</span>
               </Link>
             </TooltipTrigger>
             {!expanded && <TooltipContent side="right">Settings</TooltipContent>}
@@ -264,11 +273,14 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 href="/logout"
-                onClick={stopBubble}
+                onClick={handleNavClick}
                 className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
               >
                 <LogOut className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                {expanded && <span>Log out</span>}
+                <span className={cn(
+                  "whitespace-nowrap overflow-hidden transition-all duration-300",
+                  expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+                )}>Log out</span>
               </Link>
             </TooltipTrigger>
             {!expanded && <TooltipContent side="right">Log out</TooltipContent>}
