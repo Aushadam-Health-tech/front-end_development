@@ -9,8 +9,10 @@ import {
   ChevronRight,
   Folder,
   RefreshCw,
+  Share2,
   XCircle,
 } from "lucide-react";
+import { InviteDialog } from "@/components/InviteDialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -139,6 +141,7 @@ function NotificationList({ items }: { items: NotificationItem[] }) {
 
 export default function NotificationsPage() {
   const [activeDateLabel] = useState("Jun 24, 2022 · Today");
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col bg-gray-50">
@@ -158,11 +161,17 @@ export default function NotificationsPage() {
           <Button variant="outline" size="icon" className="h-9 w-9 rounded-full border-gray-200">
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <Button variant="default" className="rounded-full bg-teal-600 px-5 hover:bg-teal-700">
+          <Button
+            onClick={() => setInviteOpen(true)}
+            className="bg-teal-600 hover:bg-teal-700 text-white rounded-full gap-2 px-5 py-2.5 shadow-sm"
+          >
+            <Share2 className="w-4 h-4" />
             Invite
           </Button>
         </div>
       </header>
+
+      <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />
 
       <main className="min-h-0 flex-1 p-4 sm:p-6">
         <div className="h-full rounded-2xl border border-gray-100 bg-white">
