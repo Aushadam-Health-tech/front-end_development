@@ -124,3 +124,72 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Smooth Tab Transitions */
+@layer components {
+  .tab-trigger-primary {
+    @apply transition-all duration-200 cursor-pointer;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tab-trigger-primary[data-state="active"] {
+    @apply scale-[1.01];
+  }
+
+  .tab-trigger-secondary {
+    @apply transition-all duration-200 cursor-pointer;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Notification Card Hover State */
+  .notification-card {
+    @apply transition-all duration-150;
+    transition-property: box-shadow, background-color, transform;
+  }
+
+  .notification-card:hover {
+    @apply bg-gray-50;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Chevron Animation on Card Hover */
+  .notification-chevron {
+    @apply transition-transform duration-150 ease-in-out;
+  }
+
+  .notification-card:hover .notification-chevron {
+    @apply translate-x-0.75;
+    transform: translateX(3px);
+  }
+
+  /* Fade and Slide Animation for Tab Content */
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-slide-in {
+    animation: fadeSlideIn 180ms ease forwards;
+  }
+
+  /* Focus State Improvements - Only on Keyboard Navigation */
+  @media (prefers-reduced-motion: no-preference) {
+    button:focus-visible,
+    [tabindex]:focus-visible {
+      outline-offset: 2px;
+      outline-width: 2px;
+    }
+  }
+
+  /* Remove focus ring on mouse click (will be re-added on keyboard nav) */
+  button:focus:not(:focus-visible),
+  [tabindex]:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
