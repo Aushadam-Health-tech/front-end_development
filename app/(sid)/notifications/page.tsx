@@ -181,19 +181,19 @@ export default function NotificationsPage() {
           <Separator />
 
           <Tabs defaultValue="updates" className="h-[calc(100%-81px)]">
-            <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-none bg-transparent px-4 py-4 sm:grid-cols-3 sm:gap-3 sm:px-6">
-              <TabsTrigger value="updates" className="justify-start rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">updates</TabsTrigger>
-              <TabsTrigger value="appointments" className="justify-start rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">appointments</TabsTrigger>
-              <TabsTrigger value="emergency" className="justify-start rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">emergency</TabsTrigger>
+            <TabsList className="grid h-auto w-full grid-cols-1 items-stretch gap-2 rounded-none bg-transparent px-4 py-4 sm:grid-cols-3 sm:gap-3 sm:px-6">
+              <TabsTrigger value="updates" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">updates</TabsTrigger>
+              <TabsTrigger value="appointments" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">appointments</TabsTrigger>
+              <TabsTrigger value="emergency" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">emergency</TabsTrigger>
             </TabsList>
 
             <Separator />
 
             <TabsContent value="updates" className="mt-0 h-[calc(100%-98px)]">
               <Tabs defaultValue="subscribed" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 rounded-none bg-transparent px-4 py-2 sm:px-6">
+                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:px-6">
                   {updatesFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="rounded-none border-b-2 border-transparent px-3 py-2 text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
+                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
                       {filter}
                     </TabsTrigger>
                   ))}
@@ -210,9 +210,9 @@ export default function NotificationsPage() {
 
             <TabsContent value="appointments" className="mt-0 h-[calc(100%-98px)]">
               <Tabs defaultValue="all" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
+                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
                   {medicalFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="rounded-none border-b-2 border-transparent px-3 py-2 text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
+                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
                       {filter}
                     </TabsTrigger>
                   ))}
@@ -229,9 +229,9 @@ export default function NotificationsPage() {
 
             <TabsContent value="emergency" className="mt-0 h-[calc(100%-98px)]">
               <Tabs defaultValue="all" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
+                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
                   {medicalFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="rounded-none border-b-2 border-transparent px-3 py-2 text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
+                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
                       {filter}
                     </TabsTrigger>
                   ))}
