@@ -137,7 +137,7 @@ export default function Sidebar() {
         className={cn(
           "fixed left-0 top-0 h-screen bg-white border-r border-gray-100 flex flex-col z-50 shadow-sm",
           "transition-[width] duration-300 ease-in-out",
-          expanded ? "w-60 cursor-default" : "w-16 cursor-pointer"
+          expanded ? "w-60 cursor-default" : "w-20 cursor-pointer"
         )}
       >
         {/* Logo / Brand */}
@@ -196,7 +196,8 @@ export default function Sidebar() {
                   href={item.href}
                   onClick={handleNavClick}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group",
+                    "flex items-center gap-3 rounded-xl py-2.5 text-sm font-medium transition-all duration-200 group",
+                    expanded ? "justify-start px-3" : "justify-center px-4",
                     isActive
                       ? "bg-teal-600 text-white shadow-sm shadow-teal-200"
                       : "text-gray-600 hover:bg-teal-100 hover:text-teal-700 hover:shadow-sm hover:shadow-teal-100"
@@ -204,7 +205,7 @@ export default function Sidebar() {
                 >
                   <item.icon
                     className={cn(
-                      "w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110",
+                      "w-[22px] h-[22px] shrink-0 transition-transform duration-200 group-hover:scale-110",
                       isActive ? "text-white" : "text-gray-400 group-hover:text-teal-600"
                     )}
                   />
@@ -257,9 +258,12 @@ export default function Sidebar() {
               <Link
                 href="/settings"
                 onClick={handleNavClick}
-                className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group"
+                className={cn(
+                  "flex items-center gap-3 rounded-xl py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group",
+                  expanded ? "justify-start px-3" : "justify-center px-4"
+                )}
               >
-                <Settings className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
+                <Settings className="w-[22px] h-[22px] shrink-0 text-gray-400 group-hover:text-teal-600 transition-transform duration-200 group-hover:scale-110" />
                 <span className={cn(
                   "whitespace-nowrap overflow-hidden transition-all duration-300",
                   expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
@@ -274,9 +278,12 @@ export default function Sidebar() {
               <Link
                 href="/logout"
                 onClick={handleNavClick}
-                className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
+                className={cn(
+                  "flex items-center gap-3 rounded-xl py-2 text-sm text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group",
+                  expanded ? "justify-start px-3" : "justify-center px-4"
+                )}
               >
-                <LogOut className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                <LogOut className="w-[22px] h-[22px] shrink-0 transition-transform duration-200 group-hover:scale-110" />
                 <span className={cn(
                   "whitespace-nowrap overflow-hidden transition-all duration-300",
                   expanded ? "opacity-100 max-w-full" : "opacity-0 max-w-0"

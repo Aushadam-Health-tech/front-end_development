@@ -10,7 +10,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {/* Fixed overlay sidebar */}
           <Sidebar />
           {/* Spacer keeps content from going under the collapsed sidebar */}
-          <div className="w-16 shrink-0" />
+          <div className="w-20 shrink-0" />
           <div className="flex flex-col flex-1 overflow-hidden">
             {children}
           </div>

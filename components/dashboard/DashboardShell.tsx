@@ -21,7 +21,7 @@ export default function DashboardShell({ children }: DashboardShellProps) {
       <div
         className={cn(
           "flex flex-col flex-1 min-h-screen transition-all duration-300 ease-in-out",
-          collapsed ? "ml-18" : "ml-60"
+          collapsed ? "ml-20" : "ml-60"
         )}
       >
         {children}

@@ -45,7 +45,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       className={cn(
         "fixed left-0 top-0 h-screen bg-white border-r border-gray-100 flex flex-col z-50 shadow-sm",
         "transition-all duration-300 ease-in-out",
-        collapsed ? "w-18" : "w-60"
+        collapsed ? "w-20" : "w-60"
       )}
     >
       {/* ── Top: Logo + Toggle ─────────────────────────── */}
