@@ -41,14 +41,17 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
     return (
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-md rounded-3xl p-8" showCloseButton={false}>
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
             onClick={handleClose}
-            className="absolute right-4 top-4 rounded-full bg-gray-800 text-white w-8 h-8 flex items-center justify-center hover:bg-gray-700 transition-colors z-10"
+            className="absolute right-4 top-4 rounded-full bg-gray-800 text-white w-8 h-8 hover:bg-gray-700 z-10"
           >
             <X className="w-4 h-4" />
-          </button>
+          </Button>
           <div className="text-center py-6">
-            <h2 className="text-2xl font-bold mb-4">"Wonderful!</h2>
+            <h2 className="text-2xl font-bold mb-4">Wonderful!</h2>
             <p className="text-gray-700">
               This information has been successfully shared to{" "}
               <span className="text-blue-500 font-medium">@{invitedEmail}</span>.
@@ -62,12 +65,15 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-xl rounded-3xl p-8" showCloseButton={false}>
-        <button
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
           onClick={handleClose}
-          className="absolute right-4 top-4 rounded-full bg-gray-800 text-white w-8 h-8 flex items-center justify-center hover:bg-gray-700 transition-colors z-10"
+          className="absolute right-4 top-4 rounded-full bg-gray-800 text-white w-8 h-8 hover:bg-gray-700 z-10"
         >
           <X className="w-4 h-4" />
-        </button>
+        </Button>
         
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-6">
@@ -78,21 +84,21 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
         <div className="space-y-6">
           {/* Social Media Icons */}
           <div className="flex items-center justify-center gap-4">
-            <button className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center hover:bg-blue-600 transition-colors">
+            <Button type="button" size="icon" className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600">
               <Facebook className="w-6 h-6 text-white fill-white" />
-            </button>
-            <button className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center hover:bg-green-600 transition-colors">
+            </Button>
+            <Button type="button" size="icon" className="w-12 h-12 rounded-full bg-green-500 hover:bg-green-600">
               <MessageCircle className="w-6 h-6 text-white" />
-            </button>
-            <button className="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center hover:bg-blue-500 transition-colors">
+            </Button>
+            <Button type="button" size="icon" className="w-12 h-12 rounded-full bg-blue-400 hover:bg-blue-500">
               <MessageCircle className="w-6 h-6 text-white" />
-            </button>
-            <button className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center hover:bg-blue-600 transition-colors">
+            </Button>
+            <Button type="button" size="icon" className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600">
               <MessageCircle className="w-6 h-6 text-white" />
-            </button>
-            <button className="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center hover:bg-blue-500 transition-colors">
+            </Button>
+            <Button type="button" size="icon" className="w-12 h-12 rounded-full bg-blue-400 hover:bg-blue-500">
               <MessageCircle className="w-6 h-6 text-white" />
-            </button>
+            </Button>
           </div>
 
           {/* Email Input with Invite Button */}
@@ -127,12 +133,15 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
               <div className="flex-1 bg-gray-100 rounded-xl px-4 py-3 text-gray-600 text-sm">
                 ihgasdgjfwejhbds83t4jbdshbfaihgasdgjfw
               </div>
-              <button
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
                 onClick={copyLink}
-                className="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200"
               >
                 <Copy className="w-5 h-5 text-gray-600" />
-              </button>
+              </Button>
             </div>
           </div>
         </div>

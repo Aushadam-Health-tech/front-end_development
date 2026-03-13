@@ -7,7 +7,6 @@ import {
   Star,
   Clock,
   CalendarDays,
-  Plus,
   Wifi,
   WifiOff,
   Pencil,
@@ -16,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
@@ -117,11 +115,6 @@ const GRID_HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // [9,10,...,17]
 const SLOT_HEIGHT = 60; // px per hour row
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function toDate(iso: string) {
-  const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d);
-}
 
 function isoDate(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

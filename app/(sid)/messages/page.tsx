@@ -232,7 +232,9 @@ export default function MessagesPage() {
         <ScrollArea className="flex-1">
           <div className="py-2">
             {filteredConvos.map(c => (
-              <button
+              <Button
+                type="button"
+                variant="ghost"
                 key={c.id}
                 onClick={() => openConvo(c.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left ${
@@ -259,7 +261,7 @@ export default function MessagesPage() {
                     )}
                   </div>
                 </div>
-              </button>
+              </Button>
             ))}
           </div>
         </ScrollArea>
@@ -269,9 +271,11 @@ export default function MessagesPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Chat header */}
         <div className="bg-white border-b border-gray-100 px-3 sm:px-5 py-3 flex items-center justify-between shrink-0 gap-2 overflow-x-auto">
-          <button 
+          <Button
+            type="button"
+            variant="ghost"
             onClick={() => setShowPatientDetails(!showPatientDetails)}
-            className="flex items-center gap-2 sm:gap-3 hover:bg-gray-50 px-2 py-1 rounded-lg transition-colors shrink-0"
+            className="h-auto flex items-center gap-2 sm:gap-3 hover:bg-gray-50 px-2 py-1 rounded-lg transition-colors shrink-0"
           >
             <div className="relative shrink-0">
               <Avatar className="w-10 h-10">
@@ -285,7 +289,7 @@ export default function MessagesPage() {
               <p className="font-semibold text-gray-800 truncate">{active.name}</p>
               <p className="text-xs text-teal-600 whitespace-nowrap">{active.online ? "Active" : "Offline"}</p>
             </div>
-          </button>
+          </Button>
           <div className="flex items-center gap-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -387,9 +391,9 @@ export default function MessagesPage() {
                 <p className="text-xs text-red-500">Diagnosed: <span className="font-semibold">{active.patientDetails.diagnosis.join(" | ")}</span></p>
               </div>
             </div>
-            <button onClick={() => setShowPatientDetails(false)}>
+            <Button type="button" variant="ghost" size="icon" onClick={() => setShowPatientDetails(false)} className="w-8 h-8 text-gray-400 hover:text-gray-600">
               <ChevronUp className="w-5 h-5 text-gray-400 hover:text-gray-600" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -401,9 +405,9 @@ export default function MessagesPage() {
                     <User className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Patient Details</h3>
                   </div>
-                  <button className="p-1 hover:bg-gray-100 rounded">
+                  <Button type="button" variant="ghost" size="icon" className="p-1 h-6 w-6 hover:bg-gray-100 rounded">
                     <Edit2 className="w-3 h-3 text-gray-500" />
-                  </button>
+                  </Button>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
@@ -437,65 +441,65 @@ export default function MessagesPage() {
 
               {/* Medical History */}
               <div>
-                <button className="w-full flex items-center justify-between py-2">
+                <Button type="button" variant="ghost" className="w-full h-auto px-0 py-2 flex items-center justify-between hover:bg-transparent">
                   <div className="flex items-center gap-2">
                     <Heart className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Medical History</h3>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
-                </button>
+                </Button>
               </div>
 
               <Separator />
 
               {/* Allergies */}
               <div>
-                <button className="w-full flex items-center justify-between py-2">
+                <Button type="button" variant="ghost" className="w-full h-auto px-0 py-2 flex items-center justify-between hover:bg-transparent">
                   <div className="flex items-center gap-2">
                     <Heart className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Allergies</h3>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
-                </button>
+                </Button>
               </div>
 
               <Separator />
 
               {/* Family History */}
               <div>
-                <button className="w-full flex items-center justify-between py-2">
+                <Button type="button" variant="ghost" className="w-full h-auto px-0 py-2 flex items-center justify-between hover:bg-transparent">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Family History</h3>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
-                </button>
+                </Button>
               </div>
 
               <Separator />
 
               {/* Attachments */}
               <div>
-                <button className="w-full flex items-center justify-between py-2">
+                <Button type="button" variant="ghost" className="w-full h-auto px-0 py-2 flex items-center justify-between hover:bg-transparent">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Attachments</h3>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
-                </button>
+                </Button>
               </div>
 
               <Separator />
 
               {/* Insurance Details */}
               <div>
-                <button className="w-full flex items-center justify-between py-2">
+                <Button type="button" variant="ghost" className="w-full h-auto px-0 py-2 flex items-center justify-between hover:bg-transparent">
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-gray-600" />
                     <h3 className="font-semibold text-gray-800">Insurance Details</h3>
                   </div>
                   <ChevronDown className="w-4 h-4 text-gray-400" />
-                </button>
+                </Button>
               </div>
             </div>
           </div>

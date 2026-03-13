@@ -173,9 +173,9 @@ export default function NotificationsPage() {
               </div>
               <h2 className="text-2xl font-bold text-teal-700">Notifications</h2>
             </div>
-            <button className="text-sm font-medium text-teal-700 hover:underline">
+            <Button variant="link" className="h-auto p-0 text-sm font-medium text-teal-700 hover:underline">
               View All
-            </button>
+            </Button>
           </div>
 
           <Separator />

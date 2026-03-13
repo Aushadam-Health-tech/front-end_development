@@ -38,7 +38,9 @@ function AlertRow({
   onSelect: (a: EmergencyAlert) => void;
 }) {
   return (
-    <button
+    <Button
+      type="button"
+      variant="ghost"
       onClick={() => onSelect(alert)}
       className="w-full flex items-start gap-3 p-3 rounded-xl border border-red-50 bg-red-50/40
                  hover:bg-red-50 hover:border-red-100 transition-colors text-left group cursor-pointer"
@@ -59,7 +61,7 @@ function AlertRow({
         </div>
         <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
       </div>
-    </button>
+    </Button>
   );
 }
 

@@ -76,7 +76,7 @@ export default function HomePage() {
           <Card className="rounded-2xl shadow-sm border border-gray-100">
             <CardHeader className="pb-3 pt-5 px-5">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-teal-700">My Today's Appointments</h2>
+                <h2 className="text-lg font-bold text-teal-700">My Today&apos;s Appointments</h2>
                 <Button variant="ghost" className="text-sm text-teal-600 font-medium h-7 px-2">
                   View All
                 </Button>

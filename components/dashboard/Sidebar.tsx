@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Search,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -66,11 +67,14 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         </Link>
 
         {/* Toggle button */}
-        <button
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
           onClick={onToggle}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={cn(
-            "w-7 h-7 rounded-lg border border-gray-200 bg-white flex items-center justify-center",
+            "w-7 h-7 rounded-lg border-gray-200 bg-white",
             "text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors shrink-0",
             collapsed && "absolute -right-3.5 top-5 shadow-sm"
           )}
@@ -80,18 +84,21 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           ) : (
             <ChevronLeft className="w-3.5 h-3.5" />
           )}
-        </button>
+        </Button>
       </div>
 
       {/* ── Search bar ─────────────────────────────────── */}
       <div className={cn("px-3 py-3", collapsed && "flex justify-center")}>
         {collapsed ? (
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
             aria-label="Search"
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
+            className="w-10 h-10 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-50"
           >
             <Search className="w-5 h-5" />
-          </button>
+          </Button>
         ) : (
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -171,18 +178,20 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         })}
 
         {/* Logout */}
-        <button
+        <Button
+          type="button"
+          variant="ghost"
           onClick={() => {}}
           title={collapsed ? "Logout" : undefined}
           className={cn(
-            "w-full flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150",
+            "w-full h-auto justify-start items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150",
             "text-gray-500 hover:text-red-600 hover:bg-red-50",
             collapsed && "justify-center"
           )}
         >
           <LogOut className="w-5 h-5 shrink-0" />
           {!collapsed && <span>Logout</span>}
-        </button>
+        </Button>
 
         {/* Profile section */}
         {!collapsed && (

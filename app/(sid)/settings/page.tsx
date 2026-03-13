@@ -87,11 +87,13 @@ export default function SettingsPage() {
         {/* Sidebar nav */}
         <div className="w-56 bg-white border-r border-gray-100 py-4 shrink-0">
           {sections.map((s) => (
-            <button
+            <Button
+              type="button"
+              variant="ghost"
               key={s.id}
               onClick={() => setActive(s.id)}
               className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors text-left",
+                "w-full h-auto justify-start items-center gap-3 px-4 py-3 rounded-none text-sm font-medium transition-colors text-left",
                 active === s.id
                   ? "bg-teal-50 text-teal-700 border-r-2 border-teal-600"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
@@ -99,7 +101,7 @@ export default function SettingsPage() {
             >
               <s.icon className={cn("w-4 h-4", active === s.id ? "text-teal-600" : "text-gray-400")} />
               {s.label}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -119,9 +121,9 @@ export default function SettingsPage() {
                       <Avatar className="w-16 h-16">
                         <AvatarFallback className="bg-amber-400 text-white text-xl font-bold">RS</AvatarFallback>
                       </Avatar>
-                      <button className="absolute bottom-0 right-0 w-6 h-6 bg-teal-600 rounded-full flex items-center justify-center shadow">
+                      <Button type="button" size="icon" className="absolute bottom-0 right-0 w-6 h-6 bg-teal-600 rounded-full shadow hover:bg-teal-700">
                         <Camera className="w-3 h-3 text-white" />
-                      </button>
+                      </Button>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">{form.name}</p>
@@ -221,7 +223,7 @@ export default function SettingsPage() {
           {/* ── SUBSCRIPTION ── */}
           {active === "subscription" && (
             <div className="max-w-3xl">
-              <p className="text-sm text-gray-500 mb-5">Choose a plan that fits your clinic's needs.</p>
+              <p className="text-sm text-gray-500 mb-5">Choose a plan that fits your clinic&apos;s needs.</p>
               <div className="grid grid-cols-3 gap-4">
                 {plans.map((p) => (
                   <Card
@@ -287,8 +289,11 @@ export default function SettingsPage() {
                       return (
                         <div key={key} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
                           <p className="text-sm text-gray-700">{labels[key]}</p>
-                          <button
+                          <Button
+                            type="button"
+                            variant="ghost"
                             onClick={() => setNotifSettings(s => ({ ...s, [key]: !val }))}
+                            aria-pressed={val}
                             className={cn(
                               "w-10 h-5 rounded-full relative transition-colors",
                               val ? "bg-teal-600" : "bg-gray-200"
@@ -298,7 +303,7 @@ export default function SettingsPage() {
                               "absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all",
                               val ? "left-5.5 translate-x-0.5" : "left-0.5"
                             )} />
-                          </button>
+                          </Button>
                         </div>
                       );
                     })}

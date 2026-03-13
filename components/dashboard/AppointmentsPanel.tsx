@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
 type Appointment = {
@@ -58,7 +57,7 @@ export default function AppointmentsPanel() {
   return (
     <div className="w-80 shrink-0 bg-white border-l border-gray-100 flex flex-col h-screen overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4">
-        <h2 className="font-bold text-gray-800 text-base">Today's Appointments</h2>
+        <h2 className="font-bold text-gray-800 text-base">Today&apos;s Appointments</h2>
         <Button variant="link" className="text-teal-600 text-sm p-0 h-auto font-medium">View All</Button>
       </div>
       <Separator />
