@@ -119,7 +119,7 @@ function NotificationList({ items }: { items: NotificationItem[] }) {
   }
 
   return (
-    <div className="space-y-3 p-4">
+    <div className="space-y-3 px-5 py-4">
       {items.map((item) => (
         <Card key={item.id} className="rounded-xl border border-gray-200 p-4 shadow-none">
           <div className="flex items-start gap-3">
@@ -174,8 +174,8 @@ export default function NotificationsPage() {
       <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />
 
       <main className="min-h-0 flex-1 p-4 sm:p-6">
-        <div className="h-full rounded-2xl border border-gray-100 bg-white">
-          <div className="flex items-center justify-between px-5 py-5 sm:px-6">
+        <div className="h-full overflow-hidden rounded-2xl border border-gray-100 bg-white">
+          <div className="flex items-center justify-between px-5 py-5">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600">
                 <Bell className="h-5 w-5 text-white" />
@@ -189,26 +189,30 @@ export default function NotificationsPage() {
 
           <Separator />
 
-          <Tabs defaultValue="updates" className="h-[calc(100%-81px)]">
-            <TabsList className="grid h-auto w-full grid-cols-1 items-stretch gap-2 rounded-none bg-transparent px-4 py-4 sm:grid-cols-3 sm:gap-3 sm:px-6">
-              <TabsTrigger value="updates" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">updates</TabsTrigger>
-              <TabsTrigger value="appointments" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">appointments</TabsTrigger>
-              <TabsTrigger value="emergency" className="h-11 w-full justify-center rounded-xl bg-gray-100 px-4 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">emergency</TabsTrigger>
-            </TabsList>
+          <Tabs defaultValue="updates" className="h-[calc(100%-81px)] min-w-0">
+            <div className="px-5 py-4">
+              <TabsList className="flex w-full min-w-0 items-stretch gap-0 overflow-hidden rounded-xl bg-gray-100 p-1">
+                <TabsTrigger value="updates" className="h-11 min-w-0 flex-1 rounded-lg px-3 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">updates</TabsTrigger>
+                <TabsTrigger value="appointments" className="h-11 min-w-0 flex-1 rounded-lg px-3 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">appointments</TabsTrigger>
+                <TabsTrigger value="emergency" className="h-11 min-w-0 flex-1 rounded-lg px-3 py-2.5 text-center text-sm font-semibold capitalize data-[state=active]:bg-emerald-100 data-[state=active]:text-teal-700">emergency</TabsTrigger>
+              </TabsList>
+            </div>
 
             <Separator />
 
-            <TabsContent value="updates" className="mt-0 h-[calc(100%-98px)]">
-              <Tabs defaultValue="subscribed" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:px-6">
-                  {updatesFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
-                      {filter}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+            <TabsContent value="updates" className="mt-0 h-[calc(100%-101px)] min-w-0">
+              <Tabs defaultValue="subscribed" className="h-full min-w-0">
+                <div className="px-5 py-3">
+                  <TabsList className="flex w-full min-w-0 items-stretch gap-0 overflow-hidden rounded-lg border border-gray-100 bg-gray-50 p-1">
+                    {updatesFilters.map((filter) => (
+                      <TabsTrigger key={filter} value={filter} className="h-10 min-w-0 flex-1 rounded-md px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm">
+                        {filter}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </div>
                 {updatesFilters.map((filter) => (
-                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-48px)]">
+                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-58px)] min-w-0">
                     <ScrollArea className="h-full">
                       <NotificationList items={getFiltered("updates", filter)} />
                     </ScrollArea>
@@ -217,17 +221,19 @@ export default function NotificationsPage() {
               </Tabs>
             </TabsContent>
 
-            <TabsContent value="appointments" className="mt-0 h-[calc(100%-98px)]">
-              <Tabs defaultValue="all" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
-                  {medicalFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
-                      {filter}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+            <TabsContent value="appointments" className="mt-0 h-[calc(100%-101px)] min-w-0">
+              <Tabs defaultValue="all" className="h-full min-w-0">
+                <div className="px-5 py-3">
+                  <TabsList className="flex w-full min-w-0 items-stretch gap-0 overflow-hidden rounded-lg border border-gray-100 bg-gray-50 p-1">
+                    {medicalFilters.map((filter) => (
+                      <TabsTrigger key={filter} value={filter} className="h-10 min-w-0 flex-1 rounded-md px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm">
+                        {filter}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </div>
                 {medicalFilters.map((filter) => (
-                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-48px)]">
+                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-58px)] min-w-0">
                     <ScrollArea className="h-full">
                       <NotificationList items={getFiltered("appointments", filter)} />
                     </ScrollArea>
@@ -236,17 +242,19 @@ export default function NotificationsPage() {
               </Tabs>
             </TabsContent>
 
-            <TabsContent value="emergency" className="mt-0 h-[calc(100%-98px)]">
-              <Tabs defaultValue="all" className="h-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 items-stretch rounded-none bg-transparent px-4 py-2 sm:grid-cols-4 sm:px-6">
-                  {medicalFilters.map((filter) => (
-                    <TabsTrigger key={filter} value={filter} className="h-11 w-full justify-center rounded-none border-b-2 border-transparent px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:border-teal-600 data-[state=active]:text-gray-900">
-                      {filter}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+            <TabsContent value="emergency" className="mt-0 h-[calc(100%-101px)] min-w-0">
+              <Tabs defaultValue="all" className="h-full min-w-0">
+                <div className="px-5 py-3">
+                  <TabsList className="flex w-full min-w-0 items-stretch gap-0 overflow-hidden rounded-lg border border-gray-100 bg-gray-50 p-1">
+                    {medicalFilters.map((filter) => (
+                      <TabsTrigger key={filter} value={filter} className="h-10 min-w-0 flex-1 rounded-md px-3 py-2 text-center text-sm font-medium capitalize text-gray-500 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm">
+                        {filter}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </div>
                 {medicalFilters.map((filter) => (
-                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-48px)]">
+                  <TabsContent key={filter} value={filter} className="mt-0 h-[calc(100%-58px)] min-w-0">
                     <ScrollArea className="h-full">
                       <NotificationList items={getFiltered("emergency", filter)} />
                     </ScrollArea>
