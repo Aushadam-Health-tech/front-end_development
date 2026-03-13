@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   AlertTriangle,
-  ArrowRight,
   Bell,
   Calendar,
   ChevronLeft,
@@ -161,7 +160,6 @@ export default function NotificationsPage() {
           </Button>
           <Button variant="default" className="rounded-full bg-teal-600 px-5 hover:bg-teal-700">
             Invite
-            <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
         </div>
       </header>
