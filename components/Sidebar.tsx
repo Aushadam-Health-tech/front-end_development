@@ -263,6 +263,7 @@ export default function Sidebar({ onOpenSettings }: { onOpenSettings?: () => voi
             <TooltipTrigger asChild>
               <Button
                 type="button"
+                variant="ghost"
                 onClick={handleSettingsClick}
                 className={cn(
                   "flex items-center gap-3 rounded-xl py-2 text-sm text-gray-600 hover:bg-teal-100 hover:text-teal-700 transition-all duration-200 group w-full",

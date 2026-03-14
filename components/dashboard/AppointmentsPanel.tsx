@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, Trash2, Loader2, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
@@ -58,7 +59,7 @@ export default function AppointmentsPanel() {
     <div className="w-80 shrink-0 bg-white border-l border-gray-100 flex flex-col h-screen overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4">
         <h2 className="font-bold text-gray-800 text-base">Today&apos;s Appointments</h2>
-        <Button variant="link" className="text-teal-600 text-sm p-0 h-auto font-medium">View All</Button>
+        <Link href="/appointments" className="text-teal-600 text-sm font-medium hover:text-teal-700 transition-colors">View All</Link>
       </div>
       <Separator />
 
